@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
-
+{% block css %}
+<link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet">
+{% endblock css %}
 {% block content %}
-<h1>Esta vendria siendo la landing page miloco</h1>
+<div class="index">
+<h1> Landing Page</h1>
+</div>
 
 
 {% endblock content %}
