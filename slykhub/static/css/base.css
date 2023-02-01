@@ -14,7 +14,11 @@ footer {
     background-color: darkorchid;
   } */
   .navbar{
+    position: absolute;
+    top: 0;
+    width: 100%;
     text-align: right;
+    margin-bottom: 10px;
   }
 
   .navbar a[type="button"]{
@@ -24,3 +28,4 @@ footer {
     align-self: center;
     color: white;
   }
+  

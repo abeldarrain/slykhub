@@ -1,4 +1,0 @@
-include slykhub/schema.sql
-graft slykhub/static
-graft slykhub/templates
-global-exclude *.pyc
