@@ -29,7 +29,13 @@ def sign_up():
             error = 'API key is required.'
         elif password_confirmation != password:
             error = "Passwords don't match"
-
+        elif not 8<len(password)<20:
+            error = "Password must be 8-20 characters"
+        elif not 8<len(username)<20:
+            error = "Username must be 8-20 characters"
+        elif any(char.isdigit() for char in username):
+            error = "Username must not contain numbers"
+        
         if error is None:
             owner = get_owner(api_key)
             if isinstance(owner, HTTPError):
@@ -86,6 +92,8 @@ def recover():
             db = get_db()
             if not password:
                 error = 'Password is required.'
+            elif not 8<len(password)<20:
+                error = "Password must be 8-20 characters"
             elif password_confirmation != password:
                 error = "Passwords don't match"   
             if error is None:
