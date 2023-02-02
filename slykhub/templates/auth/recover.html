@@ -14,7 +14,7 @@
         {%else%}
         <h1 class="h3 mb-3 fw-normal">Insert new password</h1>
         {%endif%}
-        {% with messages = get_flashed_messages()  %}
+        {% with messages = get_flashed_messages(category_filter=["error"])  %}
         {%if messages%}
         </br>
         {%for message in messages %}
@@ -24,6 +24,31 @@
         </div>
         {%endfor%}
         {%endif%}
+        {% endwith %}
+        {% with smessages = get_flashed_messages(category_filter=["success"]) %}
+        {% if smessages %}
+        {%for message in smessages %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%endfor%}
+        {% endif %}
+        {% endwith %}
+        {% with smessages = get_flashed_messages(category_filter=["success"]) %}
+        {% if smessages %}
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+            <ul>
+                {%- for msg in smessages %}
+                <li>{{ msg }}</li>
+                {% endfor -%}
+            </ul>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+        {% endif %}
         {% endwith %}
         {% if not session['recover_username'] %}
             <div class="form-floating">

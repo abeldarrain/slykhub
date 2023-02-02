@@ -1,7 +1,6 @@
 import functools
 from .api import get_owner
 from urllib.error import HTTPError
-
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -50,9 +49,10 @@ def sign_up():
                 except db.IntegrityError:
                     error = f"API key or username already exists"
                 else:
+                    flash('User created!', 'success')
                     return redirect(url_for("auth.login"))
 
-        flash(error)
+        flash(error, 'error')
 
     return render_template('auth/sign_up.html')
 
@@ -77,7 +77,7 @@ def login():
             session['user_id'] = user['id']
             return redirect(url_for('dashboard.home'))
 
-        flash(error)
+        flash(error, 'error')
 
     return render_template('auth/login.html')
 
@@ -107,6 +107,7 @@ def recover():
                     error = e
                 else:
                     session.clear()
+                    flash('Successfully updated password', 'success')
                     return redirect(url_for("auth.login"))        
         else:
             username = request.form['username']
@@ -128,7 +129,7 @@ def recover():
             if error is None:
                 session['recover_username'] = username            
         if error:
-            flash(error)
+            flash(error, 'error')
     return render_template('auth/recover.html')
 
 @bp.before_app_request
