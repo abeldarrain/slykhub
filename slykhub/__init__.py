@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, session
 
 
 def create_app(test_config=None):
@@ -28,6 +28,7 @@ def create_app(test_config=None):
     @app.route('/', methods=['GET'])
     def index():
     #    return redirect(url_for("auth.login"))
+        session.clear()
         return render_template('index.html')
     
 

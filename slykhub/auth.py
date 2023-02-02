@@ -78,45 +78,49 @@ def login():
 @bp.route('/recover', methods=('GET', 'POST'))
 def recover():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        password_confirmation = request.form['password_confirmation']
-        api_key = request.form['api_key']
-        db = get_db()
-        error = None
-
-        if not username:
-            error = 'Username is required.'
-        elif not password:
-            error = 'Password is required.'
-        elif not api_key:
-            error = 'API key is required.'
-        elif password_confirmation != password:
-            error = "Passwords don't match"
-            
-        if error is None:
-                user = db.execute(
-                'SELECT * FROM user WHERE username = ?', (username,)
-                ).fetchone()
-                if user is None:
-                    error = 'Incorrect username.'
-                elif user['api_key'] != api_key:
-                    error = 'Incorrect user API key.'
-                    
-        if error is None:
-            session.clear()
-            try:
-                    db.execute(
-                        'UPDATE user SET password = ? WHERE username = ?',
-                        (generate_password_hash(password), username),
-                    )
-                    db.commit()
-            except Exception as e:
-                error = e.message
-            else:
-                return redirect(url_for("auth.login"))          
-               
-        flash(error)
+        if session.get('recover_username'):
+            username = session['recover_username']
+            password = request.form['password']
+            password_confirmation = request.form['password_confirmation'] 
+            error = None 
+            db = get_db()
+            if not password:
+                error = 'Password is required.'
+            elif password_confirmation != password:
+                error = "Passwords don't match"   
+            if error is None:
+                try:
+                        db.execute(
+                            'UPDATE user SET password = ? WHERE username = ?',
+                            (generate_password_hash(password), username),
+                        )
+                        db.commit()
+                except Exception as e:
+                    error = e
+                else:
+                    session.clear()
+                    return redirect(url_for("auth.login"))        
+        else:
+            username = request.form['username']
+            api_key = request.form['api_key']
+            db = get_db()
+            error = None
+            if not username:
+                error = 'Username is required.'  
+            elif not api_key:
+                error = 'API key is required.'      
+            if error is None:
+                    user = db.execute(
+                    'SELECT * FROM user WHERE username = ?', (username,)
+                    ).fetchone()
+                    if user is None:
+                        error = 'Incorrect username.'
+                    elif user['api_key'] != api_key:
+                        error = 'Incorrect user API key.'
+            if error is None:
+                session['recover_username'] = username            
+        if error:
+            flash(error)
     return render_template('auth/recover.html')
 
 @bp.before_app_request
