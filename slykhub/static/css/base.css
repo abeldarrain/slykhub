@@ -1,4 +1,9 @@
-
+html,
+body {
+  width: 100%;
+  padding-top: 0px;
+  height: 100%;
+}
 footer {
     padding-top: 20px;
     margin-top: 20px;
@@ -16,14 +21,17 @@ footer {
     background-color: darkorchid;
   } */
   .navbar{
-    position: absolute;
+    position: sticky;
     top: 0;
     width: 100%;
     height:auto;
     text-align: right;
     margin-bottom: 10px;
     padding-bottom: auto;
+    margin-top: 0px;
   }
+
+  
 
   .navbar a[type="button"]{
     margin-left:10px;
