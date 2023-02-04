@@ -9,7 +9,7 @@
     <form  method='POST'>
         <img class="mb-4" src="{{url_for('static', filename='img/slyklogo.jpg')}}" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-        {% with messages = get_flashed_messages()  %}
+        {% with messages = get_flashed_messages(category_filter=["error"])  %}
         {%if messages%}
         </br>
         {%for message in messages %}
@@ -19,6 +19,16 @@
         </div>
         {%endfor%}
         {%endif%}
+        {% endwith %}
+        {% with smessages = get_flashed_messages(category_filter=["success"]) %}
+        {% if smessages %}
+        {%for message in smessages %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%endfor%}
+        {% endif %}
         {% endwith %}
         <div class="form-floating">
             <input type="text" class="form-control" id="floatingInput" placeholder="john123" name="username" autofocus>
