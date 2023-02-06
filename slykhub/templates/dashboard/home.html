@@ -1,12 +1,16 @@
-{% extends './base.html' %}
 
-{% block header %}
+{% extends './base.html' %}
   <h1>{% block title %}Dashboard{% endblock %}</h1>
-{% endblock %}
+
 {% block css %}<link href="{{url_for('static', filename='css/home.css')}}" rel="stylesheet">{% endblock css %}<link href="{{url_for('static', filename='css/home.css')}}" rel="stylesheet">
+{% block Dcss %}{% endblock Dcss %}
 {% block content %}
-<div class="index">
-  <h1>Under Construction</h1>
+<div class="wrapper">
+    {% block Dcontent %}
+    <h1>Under Construction</h1>
+    <a href="{{url_for('dashboard.tables')}}">To Tables</a>
+    {% endblock Dcontent %}
+  
 </div>
 
 {% endblock %}

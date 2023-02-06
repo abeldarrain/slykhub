@@ -1,0 +1,10 @@
+form{
+    max-width: 330px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  background-color: inherit;
+  text-align: center;
+}

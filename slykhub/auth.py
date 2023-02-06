@@ -75,6 +75,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
+            session['api_key'] = user['api_key']
             return redirect(url_for('dashboard.home'))
 
         flash(error, 'error')

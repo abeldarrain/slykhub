@@ -6,8 +6,26 @@ body {
 h1{
     margin-top: 10px;
 }
-div.index{
-    margin-top: 10px;
+div.wrapper{
+    margin-top: 0px;
     align-items: center;
+    height: 100%;
 }
-
+.sidenav{
+	height: 100%;
+  width: 200px;
+  padding-right: 10px;
+}
+.sidenav .navbar{
+  background-color: aquamarine;
+  position: sticky;
+	left: 0;
+	width: fit-content;
+  
+}
+div.wrapper{
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 50px;
+}
