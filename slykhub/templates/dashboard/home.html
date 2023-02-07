@@ -6,9 +6,30 @@
 {% block Dcss %}{% endblock Dcss %}
 {% block content %}
 <div class="wrapper">
+  {% with messages = get_flashed_messages(category_filter=["error"])  %}
+        {%if messages%}
+        </br>
+        {%for message in messages %}
+        <div class="alert alert-primary alert-dismissible" role="alert">
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%endfor%}
+        {%endif%}
+        {% endwith %}
+        {% with smessages = get_flashed_messages(category_filter=["success"]) %}
+        {% if smessages %}
+        {%for message in smessages %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%endfor%}
+        {% endif %}
+        {% endwith %}
     {% block Dcontent %}
     <h1>Under Construction</h1>
-    <a href="{{url_for('dashboard.tables')}}">To Tables</a>
+    <a href="{{url_for('dashboard.tasks')}}">To Tasks</a>
     {% endblock Dcontent %}
   
 </div>

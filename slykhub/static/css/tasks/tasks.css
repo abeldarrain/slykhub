@@ -8,3 +8,11 @@ form{
   background-color: inherit;
   text-align: center;
 }
+.dropdown {  
+    position: relative;  
+    display: inline-block;  
+  }                                                           
+
+.btn-group{
+    align-items: right;
+  }
