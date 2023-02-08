@@ -40,15 +40,6 @@
     </nav>-->
     <nav class="navbar navbar-expand-lg navbar-primary bg-primary fixed-top">
       <div class="container-fluid">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#sidebar"
-          aria-controls="offcanvasExample"
-        >
-          <span class="navbar-toggler-icon" data-bs-target="#sidebar"></span>
-        </button>
         <a
           class="navbar-brand me-auto ms-lg-0 ms-3 text-uppercase fw-bold"
           href="{{url_for('dashboard.home')}}"
@@ -84,12 +75,10 @@
         {% block content%}
         
         {% endblock content %}
-        <!--<script src="{{url_for('static', filename='js/bundle.js')}}" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-        -->
         
       
           <footer>
-            <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top fixed-bottom">
+            <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top fixed-bot">
                 <p>&copy; Powered by <a href='https://Slyk.io'>Slyk.io</a>.</p>
             </div>
         </footer>

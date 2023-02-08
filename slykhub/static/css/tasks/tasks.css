@@ -4,6 +4,15 @@
     display: inline-block;  
   }                                                           
 
-.btn-group{
-    align-items: right;
+
+  table{
+    align-items: left;
+  }
+
+  .card-body{
+    padding: 10px;
+  }
+  .row{
+    margin-top: 20px;
+    margin-bottom: 20px;
   }

@@ -17,11 +17,14 @@
 {% endblock Dcss %}
 
 {% block Dcontent%}
-<h1>Tasks Table</h1>
-<form method='POST' id="tasksform">
-<div class="btn-group" >
-    <a class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" href="#">
-      Tasks<span class="caret"></span>
+<div class="text-center">
+  <h1>Users &#38; Tasks</h1>
+  </div>
+<form method='POST' id="tasksform" class="card">
+      <div class="card-header">
+      <div class = "text-center w-100">
+    <a class="btn btn-dark dropdown-toggle" id ="taskbtn" data-bs-toggle="dropdown" href="#">
+      Select Task<span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
         {% for task in tasks %}
@@ -30,15 +33,16 @@
     </ul>
     <input type="hidden" name="task" value=""/>
     <input type="hidden" class="master" name="mastercheckbox" value="false" />
-    
-</div>   
+  </div>
+</div>
+<div class="card-body">   
 <table class="table" id="taskstable">
     <thead>
       <tr>
         {% for header in  headers[:-1]%}
             <th>{{header}}</th>
         {% endfor %}
-          <th id="example-select-all" onclick="toggleCheckboxes()">{{headers[-1]}}</th>
+          <th id="example-select-all">{{headers[-1]}}</th>
       </tr>
     </thead>
     <tbody>
@@ -58,8 +62,10 @@
       {% endfor %}  
     </tbody>
   </table>
-  <button class="w-100 btn btn-lg btn-primary" type="submit">Complete Task</button>
+  <div class=" w-100 text-center">
+  <button class="btn btn-lg btn-primary text-center" type="submit">Complete Task</button>
+  <div>
 </form>
-
+</div>
   <script type="text/javascript" src="{{url_for('static', filename='js/tasks/dropdown.js')}}"></script>
 {% endblock Dcontent %}

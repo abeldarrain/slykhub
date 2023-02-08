@@ -63,8 +63,6 @@ def tasks():
                 error = 'Selected users already completed the task' if succ == 0 else None
         if not error:  
             flash(f'Successfully completed task for {succ} users.', 'success')
-        else: 
-            flash(error, 'error')
             
     headers=('User', 'Email', 'Balance', 'Select')
     rows=[]
