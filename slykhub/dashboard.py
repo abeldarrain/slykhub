@@ -82,13 +82,12 @@ def tasks():
                 else:    
                     balance = balancedata['data']
                     rows.append((username, email, balance, ids))
-    if not error:
-        tasks_data=get_enabled_tasks(session['api_key'])
-        if tasks_data is HTTPError:
-            error = tasks_data
-        else:
-            for task in tasks_data['data']:
-                tasks.append(task['name'])
+    tasks_data=get_enabled_tasks(session['api_key'])
+    if tasks_data is HTTPError:
+        error = tasks_data
+    else:
+        for task in tasks_data['data']:
+            tasks.append(task['name'])
                 
     if error:
         flash(error, 'error')
