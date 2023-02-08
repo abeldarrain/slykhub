@@ -5,15 +5,71 @@ body {
 h1{
     margin-top: 10px;
 }
-div.index{
-    margin-top: 10px;
+div.wrapper{
+    margin-top: 0px;
     align-items: center;
+    height: 100%;
+}
+.sidenav{
+	height: 100%;
+  width: 200px;
+  padding-right: 10px;
+}
+.sidenav .navbar{
+  background-color: aquamarine;
+  position: sticky;
+	left: 0;
+	width: fit-content;
+  
+}
+div.wrapper{
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 50px;
+}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+body,
+button {
+  font-family: "Inter", sans-serif;
+}
+:root {
+  --offcanvas-width: 270px;
+  --topNavbarHeight: 56px;
+}
+.sidebar-nav {
+  width: var(--offcanvas-width);
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+}
+.sidebar-link .right-icon {
+  display: inline-flex;
+}
+.sidebar-link[aria-expanded="true"] .right-icon {
+  transform: rotate(180deg);
+}
+@media (min-width: 992px) {
+  body {
+    overflow: auto !important;
+  }
+
+  /* this is to remove the backdrop */
+  .offcanvas-backdrop::before {
+    display: none;
+  }
+  .sidebar-nav {
+    -webkit-transform: none;
+    transform: none;
+    visibility: visible !important;
+    height: calc(100% - var(--topNavbarHeight));
+    top: var(--topNavbarHeight);
+  }
 }
 
-body {
-    align-items: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #f5f5f5;
-    text-align: center;
-  }
+main{
+  padding: 30px;
+}
+
+

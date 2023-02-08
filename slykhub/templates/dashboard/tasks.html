@@ -1,0 +1,71 @@
+{% extends 'dashboard/home.html' %}
+
+{% block title %}Tasks{% endblock title %}
+{% block Dcss %}
+
+<!--
+<link rel="stylesheet" href="{{url_for('static', filename='css/datatable/bootstrap.min.css')}}" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="{{url_for('static', filename='css/datatable/dataTables.bootstrap5.min.css')}}" />
+-->
+<link rel="stylesheet" href="{{url_for('static', filename='css/tasks/tasks.css')}}" />
+
+<script src="{{url_for('static', filename='js/tasks/select.js')}}" ></script>
+{% endblock Dcss %}
+
+{% block Dcontent%}
+<div class="text-center">
+  <h1>Users &#38; Tasks</h1>
+  </div>
+<form method='POST' id="tasksform" class="card">
+      <div class="card-header">
+      <div class = "text-center w-100">
+    <a class="btn btn-dark dropdown-toggle" id ="taskbtn" data-bs-toggle="dropdown" href="#">
+      Select Task<span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        {% for task in tasks %}
+            <li><a class="dropdown-item" href="#">{{task}}</a></li>
+        {% endfor %}
+    </ul>
+    <input type="hidden" name="task" value=""/>
+    <input type="hidden" class="master" name="mastercheckbox" value="false" />
+  </div>
+</div>
+<div class="card-body">   
+<table class="table" id="taskstable">
+    <thead>
+      <tr>
+        {% for header in  headers[:-1]%}
+            <th>{{header}}</th>
+        {% endfor %}
+          <th id="example-select-all">{{headers[-1]}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in  rows%}
+        <tr>
+        {% for cell in  row[:-2]%}
+        <td>{{cell}}</td>
+        {% endfor %}
+        <td>
+        {%for data in row[-2]%}
+            {{data['assetCode']}} :
+            {{ data['amount']}} <br />
+        {% endfor %}
+        </td>
+            <td><input type="checkbox" name="taskcheckbox" value={{row[-1]}} /></td>
+        </tr>
+      {% endfor %}  
+    </tbody>
+  </table>
+  <div class=" w-100 text-center">
+  <button class="btn btn-lg btn-primary text-center" type="submit">Complete Task</button>
+  <div>
+</form>
+</div>
+  <script type="text/javascript" src="{{url_for('static', filename='js/tasks/dropdown.js')}}"></script>
+{% endblock Dcontent %}

@@ -1,0 +1,18 @@
+
+.dropdown {  
+    position: relative;  
+    display: inline-block;  
+  }                                                           
+
+
+  table{
+    align-items: left;
+  }
+
+  .card-body{
+    padding: 10px;
+  }
+  .row{
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }

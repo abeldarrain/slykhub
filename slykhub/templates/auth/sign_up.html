@@ -1,10 +1,10 @@
 {% extends './base.html' %}
 
-{% block title %}Slykhub Sign Up{% endblock title %}
+{% block title %}Sign Up{% endblock title %}
  
 {% block css %}<link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">{% endblock css %}
 {% block content %}
-<main class="form-signin w-100 m-auto">
+<div class="form-signin w-100 m-auto">
     <div class="text-center">
     <form  method='POST'>
         <img class="mb-4" src="{{url_for('static', filename='img/slykhublogo.svg')}}" alt="">
@@ -49,5 +49,5 @@
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign Up</button>
     </form>
     </div>   
-</main>
+</div>
 {% endblock content %}
