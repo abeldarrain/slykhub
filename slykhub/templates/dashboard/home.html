@@ -2,36 +2,67 @@
 {% extends './base.html' %}
   <h1>{% block title %}Dashboard{% endblock %}</h1>
 
-{% block css %}<link href="{{url_for('static', filename='css/home.css')}}" rel="stylesheet">{% endblock css %}<link href="{{url_for('static', filename='css/home.css')}}" rel="stylesheet">
-{% block Dcss %}{% endblock Dcss %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css"/>
+
+
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+
+<link href="{{url_for('static', filename='css/home.css')}}" rel="stylesheet">
+{% block Dcss %}
+
+{% endblock Dcss %}
+
+{% endblock css %}
+
+
 {% block content %}
-<div class="wrapper">
-  {% with messages = get_flashed_messages(category_filter=["error"])  %}
-        {%if messages%}
-        </br>
-        {%for message in messages %}
-        <div class="alert alert-primary alert-dismissible" role="alert">
-        <strong>{{message}}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {%endfor%}
-        {%endif%}
-        {% endwith %}
-        {% with smessages = get_flashed_messages(category_filter=["success"]) %}
-        {% if smessages %}
-        {%for message in smessages %}
-        <div class="alert alert-success alert-dismissible" role="alert">
-        <strong>{{message}}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {%endfor%}
-        {% endif %}
-        {% endwith %}
+<div class="offcanvas offcanvas-start sidebar-nav bg-dark"
+      tabindex="-1"
+      id="sidebar">
+      <div class="offcanvas-body p-0">
+        <nav class="navbar-dark">
+          <ul class="navbar-nav">
+            <li>aaaaaaaaaaa<li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <main class="mt-5 pt-3">
+      <div class="container-fluid">
+        <div class="row">
+
+          {% with messages = get_flashed_messages(category_filter=["error"])  %}
+                {%if messages%}
+                </br>
+                {%for message in messages %}
+                <div class="alert alert-primary alert-dismissible" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {%endfor%}
+                {%endif%}
+                {% endwith %}
+                {% with smessages = get_flashed_messages(category_filter=["success"]) %}
+                {% if smessages %}
+                {%for message in smessages %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {%endfor%}
+                {% endif %}
+                {% endwith %}
+      </div>
     {% block Dcontent %}
     <h1>Under Construction</h1>
     <a href="{{url_for('dashboard.tasks')}}">To Tasks</a>
     {% endblock Dcontent %}
-  
-</div>
+    </div>
+  </main>
+
 
 {% endblock %}

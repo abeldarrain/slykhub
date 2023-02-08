@@ -1,5 +1,5 @@
 import os
-
+from datetime import timedelta
 from flask import Flask, render_template, redirect, url_for, session
 
 
@@ -10,6 +10,7 @@ def create_app(test_config=None):
         SECRET_KEY='qwer1234',
         DATABASE=os.path.join(app.instance_path, 'slykhub.sqlite'),
     )
+    app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

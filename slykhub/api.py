@@ -32,7 +32,7 @@ def get_verified_users(apikey, url="https://api.slyk.io/users?filter[verified]=t
             return_data = json_data
     except error as e:
             print(e)
-    
+
     except HTTPError as e:
             print(e)
             return e
@@ -116,7 +116,15 @@ def get_wallet_balance(apikey, id):
         return json_data
     except error as e:
         print(e)
-        return None
+    
     except HTTPError as e:
         print(e)
-        return None
+        return e
+
+def create_user(apikey, userdata):
+        print(userdata)
+        try:
+                req =  request.Request("https://api.slyk.io/users/", headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey}, data=userdata)
+                resp = request.urlopen(req)
+        except HTTPError as e:
+                print(e.reason)
