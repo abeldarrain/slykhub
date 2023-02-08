@@ -64,7 +64,7 @@ def tasks():
         if not error:  
             flash(f'Successfully completed task for {succ} users.', 'success')
             
-    headers=('User', 'Email', 'Balance', 'Select')
+    headers=('User','Email', 'Balance', 'Select All')
     rows=[]
     tasks=[]
     user_data = get_verified_users(session['api_key'])
