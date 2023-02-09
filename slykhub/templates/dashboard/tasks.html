@@ -48,15 +48,17 @@
     <tbody>
       {% for row in  rows%}
         <tr>
-        {% for cell in  row[:-2]%}
+        {% for cell in  row[:2]%}
         <td>{{cell}}</td>
         {% endfor %}
-        <td>
+        <!--WITH BALANCE-->
+        <!--<td>
         {%for data in row[-2]%}
             {{data['assetCode']}} :
             {{ data['amount']}} <br />
         {% endfor %}
         </td>
+        -->
             <td><input type="checkbox" name="taskcheckbox" value={{row[-1]}} /></td>
         </tr>
       {% endfor %}  

@@ -6,7 +6,7 @@ from werkzeug.exceptions import abort
 from slykhub.auth import login_required
 from slykhub.db import get_db
 from urllib.error import HTTPError
-from .api import get_verified_users , get_enabled_tasks, complete_task, get_wallet_balance, create_user
+from .api import get_verified_users , get_enabled_tasks, complete_task, get_wallet_balance, get_users
 
 
 
@@ -64,24 +64,28 @@ def tasks():
         if not error:  
             flash(f'Successfully completed task for {succ} users.', 'success')
             
-    headers=('User','Email', 'Balance', 'Select All')
+    headers=('User','Email', 'Select All')
+    #headers=('User','Email', 'Balance', 'Select All')
     rows=[]
     tasks=[]
     user_data = get_verified_users(session['api_key'])
     if user_data is HTTPError:
         error = user_data
     else:
-       
         for user in user_data['data']:
             if 'user' in user['roles']:
                 (username, email, ids) = (user['name'], user['email'], user['id'])
-                wallet = user['primaryWalletId']
-                balancedata = get_wallet_balance(session['api_key'], wallet)
-                if balancedata is HTTPError:
-                    error = balancedata
-                else:    
-                    balance = balancedata['data']
-                    rows.append((username, email, balance, ids))
+                ######################### With Balance ################# 
+                # wallet = user['primaryWalletId']
+                # balancedata = get_wallet_balance(session['api_key'], wallet)
+                # if balancedata is HTTPError:
+                #     error = balancedata
+                # else:  
+                #     #balance = balancedata['data']
+                #     #rows.append((username, email, balance, ids))
+                ######################### Without Balance #################
+                rows.append((username, email, ids))
+                ######################### END #################
     tasks_data=get_enabled_tasks(session['api_key'])
     if tasks_data is HTTPError:
         error = tasks_data
