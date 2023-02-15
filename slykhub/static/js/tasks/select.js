@@ -1,11 +1,12 @@
 
 $(document).ready(function (){
     var table = $('#taskstable');
-  
+    var pag;
    // Handle click on "Select all" control
    $('#example-select-all').on('click', function(){
     // Get all rows with search applied
    //  var rows = table.rows({ 'search': 'applied' }).nodes();
+   
    var rows = table.rows({ page: 'current' }).nodes();
    const checkboxes = $("input[type='checkbox']");
    var aux1=0;
@@ -28,6 +29,7 @@ $(document).ready(function (){
    //  masterCheckBox[0].val=!masterCheckBox[0].val;
     var isMasterChecked = masterCheckBox[0].val;
     var info = table.page.info();
+    pag =info['page'];
     console.log(info['page']);
     $('input[type="checkbox"]', rows).prop('checked', isMasterChecked);
   });
@@ -72,6 +74,5 @@ $(document).ready(function (){
       table = table.DataTable();
       console.log('isDataTable');
     }
-    
   });
   

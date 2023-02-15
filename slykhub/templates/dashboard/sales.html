@@ -4,12 +4,36 @@
 {% block Dcss %}
 
 <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard/sales.css')}}" />
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock Dcss %}
 
 {% block Dcontent%}
+<div class="row py-2">
+    <div class="col-md-4 py-1">
+    <div class="card"  id="PaymentMethodsCard">
+        <div class="card-header bg-primary text-white">
+            <h3> Payment Methods</h3>
+        </div>
+
+        <div class="card-body">
+            <canvas id="PaymentMethodsChart" class="chart-container"></canvas>
+            <script>
+                const ctx = document.getElementById('PaymentMethodsChart');
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                    labels: {{payment_methods |tojson}},
+                    datasets: {{payment_methods_data | tojson}}
+                    },
+                    
+                });
+            </script>
+        </div>
+    </div>
+    </div>
 
 
-
+</div>
 
 {% endblock Dcontent %}

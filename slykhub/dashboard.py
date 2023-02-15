@@ -6,8 +6,11 @@ from werkzeug.exceptions import abort
 from slykhub.auth import login_required
 from slykhub.db import get_db
 from urllib.error import HTTPError
-from .api import get_verified_users , get_enabled_tasks, complete_task, get_wallet_balance, get_users
-
+from .api import(
+    get_verified_users , get_enabled_tasks, complete_task, 
+    get_wallet_balance, get_users, get_payment_methods,
+    get_completed_transactions
+)
 
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
@@ -80,4 +83,43 @@ def tasks():
 @bp.route('/sales')
 @login_required
 def sales():
-    return render_template('dashboard/sales.html')
+    error=''
+    payment_methods = {}
+    pm = get_payment_methods(session['api_key'])
+    if pm is HTTPError:
+        error = pm
+    else:
+        for p in pm['data']:
+            if p['connected']:
+                payment_methods[p['name']] = p['slug']
+        print (f'This is the payment methods dictionary: {payment_methods}')
+    payment_methods_data =[]
+    pdata=[]
+    ct = get_completed_transactions(session['api_key'])            
+    if ct is Exception:
+        print(ct)
+        error = ct
+    else:
+        print(ct)
+        dicti = dict.fromkeys(payment_methods.values(), 0)
+        for trans in ct['data']:
+            if 'internal' not in trans['code']:
+                splitted = trans['code'].split(':')
+                print(splitted)
+                pm_name = splitted[-1]
+                if dicti.get(pm_name) is None:
+                    pretty_payname = ' '.join(list(map(str.capitalize,splitted)))
+                    payment_methods[pretty_payname]=pm_name
+                    dicti[pm_name]=0
+                dicti[pm_name] = dicti[pm_name] + 1
+        
+        pdata = list(dicti.values())                       
+        payment_methods_data = [{
+                        'label': '# Successful payments',
+                        'data': pdata,
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+    if error:
+        flash(error, 'error')
+    return render_template('dashboard/sales.html',payment_methods=list(payment_methods.keys()), payment_methods_data=  payment_methods_data)
