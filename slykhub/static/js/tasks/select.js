@@ -7,9 +7,25 @@ $(document).ready(function (){
     // Get all rows with search applied
    //  var rows = table.rows({ 'search': 'applied' }).nodes();
    var rows = table.rows({ page: 'current' }).nodes();
+   const checkboxes = $("input[type='checkbox']");
+   var aux1=0;
+   var aux2=0;
+   for(var i=0; i<checkboxes.length; i++) {
+     if(checkboxes[i].checked){
+         aux1+=1;
+         console.log(aux1);
+     }
+     else{
+      aux2+=1;
+      console.log(aux2);
+     }
+   }
+   var valueToMaster = (aux1<aux2);
+   console.log(valueToMaster, aux1, aux2);
     // Check/uncheck checkboxes for all rows in the table
     var masterCheckBox = $("input[type='hidden'].master");
-    masterCheckBox[0].val=!masterCheckBox[0].val;
+    masterCheckBox[0].val=valueToMaster;
+   //  masterCheckBox[0].val=!masterCheckBox[0].val;
     var isMasterChecked = masterCheckBox[0].val;
     var info = table.page.info();
     console.log(info['page']);
