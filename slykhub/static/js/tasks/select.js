@@ -1,17 +1,18 @@
 
-
 $(document).ready(function (){
-    var table = $('#taskstable').DataTable();
+    var table = $('#taskstable');
   
    // Handle click on "Select all" control
    $('#example-select-all').on('click', function(){
     // Get all rows with search applied
-    var rows = table.rows({ 'search': 'applied' }).nodes();
+   //  var rows = table.rows({ 'search': 'applied' }).nodes();
+   var rows = table.rows({ page: 'current' }).nodes();
     // Check/uncheck checkboxes for all rows in the table
     var masterCheckBox = $("input[type='hidden'].master");
     masterCheckBox[0].val=!masterCheckBox[0].val;
     var isMasterChecked = masterCheckBox[0].val;
-
+    var info = table.page.info();
+    console.log(info['page']);
     $('input[type="checkbox"]', rows).prop('checked', isMasterChecked);
   });
   
@@ -50,6 +51,11 @@ $(document).ready(function (){
          }
       });
    });
-  
+   
+   if ( ! $.fn.DataTable.isDataTable( table) ) {
+      table = table.DataTable();
+      console.log('isDataTable');
+    }
+    
   });
   

@@ -35,7 +35,7 @@ def tasks():
             error='No selected users'
             
         if not error:
-            print(len(user_ids))
+            print(f'User Tasks to complete: {len(user_ids)}')
             error=complete_task(selected_task, user_ids, session['api_key'])
             if error is not HTTPError:
                 err422 = error
