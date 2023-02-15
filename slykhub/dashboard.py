@@ -20,27 +20,6 @@ def redir():
 @bp.route('/home')
 @login_required
 def home():
-    # for i in range(8,1000):
-    #     userdata = {"approved" : True,
-    #                 "email" : f"fake_user{str(i)}@fakemail.com",
-    #                 "code": "R876aesad",
-    #                 "locale": "en",
-    #                 "name": "Fakelton"+str(i),
-    #                 "password": "Fakelton3",
-    #                 "verified": True
-    #                 }
-    #     from json import dumps
-    #     import urllib
-    #     aaa= []
-    #     for i in userdata.keys():
-    #         (a,b) = (i,dumps(userdata[i]))
-    #         aaa.append((a,b))
-        
-        
-    #     userdata = urllib.parse.urlencode(aaa)
-    #     # userdata = dumps(userdata)
-    #     userdata = userdata.encode()
-    #     create_user(session['api_key'],userdata)
         return render_template('dashboard/home.html')
 
 @bp.route('/tasks', methods=('GET', 'POST'))
@@ -56,6 +35,7 @@ def tasks():
             error='No selected users'
             
         if not error:
+            print(len(user_ids))
             error=complete_task(selected_task, user_ids, session['api_key'])
             if error is not HTTPError:
                 err422 = error
@@ -96,3 +76,8 @@ def tasks():
     if error:
         flash(error, 'error')
     return render_template('dashboard/tasks.html', headers=headers, rows=rows, tasks=tasks)
+
+@bp.route('/sales')
+@login_required
+def sales():
+    return render_template('dashboard/sales.html')
