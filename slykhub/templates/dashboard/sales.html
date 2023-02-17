@@ -18,9 +18,9 @@
         <div class="card-body">
             <canvas id="PaymentMethodsChart" class="chart-container"></canvas>
             <script>
-                const ctx = document.getElementById('PaymentMethodsChart');
+                const PMC = document.getElementById('PaymentMethodsChart');
 
-                new Chart(ctx, {
+                new Chart(PMC, {
                     type: 'pie',
                     data: {
                     labels: {{payment_methods |tojson}},
@@ -33,7 +33,68 @@
     </div>
     </div>
 
+    <div class="col-md-4 py-1">
+        <div class="card"  id="OrdersByPriceCard">
+            <div class="card-header bg-primary text-white">
+                <h3>Orders by Price</h3>
+            </div>
+    
+            <div class="card-body">
+                <div class = "text-center w-100">
+                    <a class="btn btn-dark dropdown-toggle" id ="assetbtn" data-bs-toggle="dropdown" href="#">
+                      {{assets[0]}}<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for asset in assets %}
+                            <li><a class="dropdown-item" href="#">{{asset}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <input type="hidden" id="selected_asset" value="{{assets[0]}}" />
+                </div>
+                <canvas id="OrdersByPriceChart" class="chart-container"></canvas>
+                <script>
+                    const OPC = document.getElementById('OrdersByPriceChart');
+                    var sa = document.getElementById('selected_asset').value;
+                    console.log(sa);
+                    var assetindex = {{assets|tojson}}.indexOf(sa)
+                    console.log(assetindex);
+                    var labels = {{orders_prices|tojson}}[assetindex];
+                    OPC_chart = new Chart(OPC, {
+                        type: 'line',
+                        data: {
+                        labels: labels,
+                        datasets:  {{orders_prices_data |tojson}}
+                        },
+                        options: {
+                            scales: {
+                              y: {
+                                beginAtZero: true
+                              }
+                            }
+                          }
+                    });
+                    $(".dropdown-menu li a").click(function(){
+  
+                        $("#assetbtn").html($(this).text()+' <span class="caret"></span>');
+                      
+                        $("input[id='selected_asset']").val($(this).text());
 
+                        console.log('refresh chart');
+
+                        sa = document.getElementById('selected_asset').value;
+                        console.log(sa);
+                        assetindex = {{assets|tojson}}.indexOf(sa)
+                        console.log(assetindex);
+                        labels = {{orders_prices|tojson}}[assetindex];
+                        OPC_chart.data.labels= labels;
+                        OPC_chart.update();
+                      });
+                    
+                </script>
+            </div>
+        </div>
+        </div>
+    
 </div>
-
+<script type="text/javascript" src="{{url_for('static', filename='js/sales/dropdown.js')}}"></script>
 {% endblock Dcontent %}
