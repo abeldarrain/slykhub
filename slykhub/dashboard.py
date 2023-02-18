@@ -54,7 +54,7 @@ def tasks():
     rows=[]
     tasks=[]
     user_data = get_verified_users(session['api_key'])
-    if user_data is HTTPError:
+    if isinstance(user_data,HTTPError):
         error = user_data
     else:
         for user in user_data['data']:
@@ -149,3 +149,17 @@ def sales():
                            payment_methods=list(payment_methods.keys()), payment_methods_data=payment_methods_data,
                            orders_prices=orders_prices_by_asset, orders_prices_data = orders_prices_data,
                            assets=eassets)
+
+@bp.route('/users')
+@login_required
+def users():
+    error =''
+    users = get_verified_users(session['api_key'])
+    if isinstance(users,HTTPError):
+        error = users
+    else:
+        
+        pass
+    if error:
+        flash(error, 'error')
+    return render_template('dashboard/users.html', users=users)

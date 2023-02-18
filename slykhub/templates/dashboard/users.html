@@ -1,0 +1,41 @@
+{% extends 'dashboard/home.html' %}
+
+{% block title %}Users{% endblock title %}
+{% block Dcss %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/dashboard/users.css')}}" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock Dcss %}
+
+{% block Dcontent%}
+<div class="row py-2 text-justify">
+    <div class="card"  id="OrdersByPriceCard">
+        <div class="card-header bg-primary text-white">
+            <div class="row w-100 text-center">
+            <h3>User Growth</h3>
+            <div class = "text-center">
+                <a class="btn btn-outline-white dropdown-toggle text-white" id ="assetbtn" data-bs-toggle="dropdown" href="#">
+                  select time lapse<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    
+                </ul>
+                <input type="hidden" id="selected_datetime" value="" />
+            </div>
+            </div>
+        </div>
+
+        <div class="card-body" id="UsersInTime">
+            
+            <canvas id="UsersInTimeChart" class="chart-container"></canvas>
+           
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+{% endblock Dcontent %}
