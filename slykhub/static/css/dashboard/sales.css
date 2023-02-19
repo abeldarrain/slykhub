@@ -1,0 +1,44 @@
+.card{
+    padding: 0px;
+}
+.card-body{
+    padding: 10px;
+}
+
+
+
+#PaymentMethodsCardBody{
+    height: 100%;
+    width: 100%;
+    align-self: center;
+}
+#PaymentMethodsCard{
+    align-self: right;
+    height: 375px;
+    width: 300px;
+    align-items: center;
+}
+
+#OrdersByPriceCard{
+    height: 375px;
+    width: 650px;
+    align-items: center;
+}
+#OrdersByPriceCardBody{
+    height: 100%;
+    width: 100%;
+    align-self: center;
+}
+
+.card{
+    margin: 20px;
+}
+.row{
+    width: fit-content;
+    margin-right: 0 !important;
+    align-items: stretch;
+}
+.card-header{
+    width: 100%;
+    text-align: center !important;
+}

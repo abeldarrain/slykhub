@@ -6,8 +6,13 @@ from werkzeug.exceptions import abort
 from slykhub.auth import login_required
 from slykhub.db import get_db
 from urllib.error import HTTPError
-from .api import get_verified_users , get_enabled_tasks, complete_task, get_wallet_balance, get_users
-
+from .api import(
+    get_verified_users , get_enabled_tasks,  
+    get_wallet_balance, get_users, get_payment_methods,
+    get_completed_transactions, get_orders, get_enabled_assets
+)
+from .postapi import complete_task
+from .util import convert
 
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
@@ -80,4 +85,67 @@ def tasks():
 @bp.route('/sales')
 @login_required
 def sales():
-    return render_template('dashboard/sales.html')
+    error=''
+    orders = get_orders(session['api_key'])
+    apiassets = get_enabled_assets(session['api_key'])
+    eassets=[]
+    if orders  is HTTPError:
+        error = orders
+    elif apiassets is HTTPError:
+        error = apiassets
+    for ea in apiassets['data']:
+        eassets.append(ea['code'])   
+    else: 
+        ######################################Payment methods Chart################################
+        payment_methods = {}
+        orders_prices ={}
+        orders_prices_asset = ''
+        for o in orders['data']:
+            pm = str.capitalize(o['chosenPaymentMethod'])
+            oa = o['amount']
+            orders_prices_asset = o['assetCode']
+            if payment_methods.get(pm):
+                payment_methods[pm] += 1  
+            else:
+                payment_methods[pm] = 1
+            if orders_prices.get(oa):
+                orders_prices[oa]+=1
+            else:
+                orders_prices[oa] = 1
+        print (f'This is the payment methods dictionary: {payment_methods}')                       
+        payment_methods_data = [{
+                        'label': '# Successful payments',
+                        'data': list(payment_methods.values()),
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+            
+        ##################################Orders by Price Chart##############################   
+        orders_prices_data =[]
+        orders_prices_by_asset = []
+        for sa in eassets:
+            item = convert(session['api_key'],list(orders_prices.keys()), sa, orders_prices_asset)
+            if isinstance(item,HTTPError):
+                eassets.remove(sa)
+            else:
+                orders_prices_by_asset.append(item)
+            
+        
+         
+        orders_prices_data = [{
+        'label': f'Amount of orders',
+        'data': list(orders_prices.values()),
+        'fill': False,
+        'borderColor': 'rgb(75, 192, 192)',
+        'tension': 0.1
+        }]
+        print(f'This is the Dict im sending {orders_prices_by_asset}')    
+            
+            
+        #######################################End##########################    
+        if error:
+            flash(error, 'error')
+        return render_template('dashboard/sales.html',
+                           payment_methods=list(payment_methods.keys()), payment_methods_data=payment_methods_data,
+                           orders_prices=orders_prices_by_asset, orders_prices_data = orders_prices_data,
+                           assets=eassets)
