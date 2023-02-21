@@ -47,17 +47,17 @@ def get_stacked_users_dict(user_growth_dict, list_of_dates):
     ##########get stacked users til date##############
     if list_of_dates[0] in list(user_growth_dict.keys()):
         stop = list_of_dates[0]
-        for i in user_growth_dict.keys():
-            print(i)
+        for i in user_growth_dict.keys():   
             if i == stop:
-                print('BBBBRRREEEEAAAAKKKK')
                 break
             else:
                 total += user_growth_dict[i]
     
     ####make dict####
     for day in list_of_dates:
+        if day in user_growth_dict:
             total += user_growth_dict[day]
-            total_users_by_date_given[day] = total
+        total_users_by_date_given[day] = total
+        
     
     return total_users_by_date_given
