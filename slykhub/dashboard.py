@@ -160,8 +160,9 @@ def sales():
 @login_required
 def users():
     error =''
-    
-        
+    orders = get_orders(session['api_key'])
+    if isinstance(orders,Exception):
+        error = orders        
         
     ############################################User Growth################3
     new_users_by_date ={}
@@ -281,7 +282,7 @@ def users():
                     }]
     ########################################Total users####################3
     
-    from .util import get_stacked_users_dict
+    from .util import get_stacked_users_dict, get_stacked_active_users_dict
     
     total_users_complete = get_stacked_users_dict(new_users_by_date_complete, date_list_complete)
     total_users_1year = get_stacked_users_dict(new_users_by_date_complete, date_list_year_ago)
@@ -291,10 +292,23 @@ def users():
     total_users_2weeks = get_stacked_users_dict(new_users_by_date_complete, date_list_two_weeks_ago)
     total_users_1week = get_stacked_users_dict(new_users_by_date_complete, date_list_one_week_ago)
      
+    total_active_users_complete = get_stacked_active_users_dict(orders, date_list_complete, date_list_complete)
+    total_active_users_1year = get_stacked_active_users_dict(orders, date_list_year_ago, date_list_complete)
+    total_active_users_6months = get_stacked_active_users_dict(orders, date_list_six_months_ago, date_list_complete)
+    total_active_users_3months = get_stacked_active_users_dict(orders, date_list_three_months_ago, date_list_complete)
+    total_active_users_1month = get_stacked_active_users_dict(orders, date_list_one_month_ago, date_list_complete)
+    total_active_users_2weeks = get_stacked_active_users_dict(orders, date_list_two_weeks_ago, date_list_complete)
+    total_active_users_1week = get_stacked_active_users_dict(orders, date_list_one_week_ago, date_list_complete)
     
     total_users_complete_dataset =[{
        'label': 'Total users',
                         'data': list(total_users_complete.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                   {
+       'label': 'Total active users',
+                        'data': list(total_active_users_complete.values()),
                         'borderWidth': 2,
                         'spacing': 1        
     }]
@@ -303,10 +317,22 @@ def users():
                         'data': list(total_users_1year.values()),
                         'borderWidth': 2,
                         'spacing': 1        
+    },
+                                {
+       'label': 'Total active users',
+                        'data': list(total_active_users_1year.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
     }]
     total_users_6months_dataset =[{
        'label': 'Total users',
                         'data': list(total_users_6months.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                  {
+       'label': 'Total active users',
+                        'data': list(total_active_users_6months.values()),
                         'borderWidth': 2,
                         'spacing': 1        
     }]
@@ -315,10 +341,22 @@ def users():
                         'data': list(total_users_3months.values()),
                         'borderWidth': 2,
                         'spacing': 1        
+    },
+                                  {
+       'label': 'Total active users',
+                        'data': list(total_active_users_3months.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
     }]
     total_users_1month_dataset =[{
        'label': 'Total users',
                         'data': list(total_users_1month.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                 {
+       'label': 'Total active users',
+                        'data': list(total_active_users_1month.values()),
                         'borderWidth': 2,
                         'spacing': 1        
     }]
@@ -327,10 +365,22 @@ def users():
                         'data': list(total_users_2weeks.values()),
                         'borderWidth': 2,
                         'spacing': 1        
+    },
+                                 {
+       'label': 'Total active users',
+                        'data': list(total_active_users_2weeks.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
     }]
     total_users_1week_dataset =[{
        'label': 'Total users',
                         'data': list(total_users_1week.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                {
+       'label': 'Total active users',
+                        'data': list(total_active_users_1week.values()),
                         'borderWidth': 2,
                         'spacing': 1        
     }]

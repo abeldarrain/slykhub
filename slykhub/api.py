@@ -217,7 +217,7 @@ def get_completed_transactions(apikey, url="https://api.slyk.io/transactions?fil
                         return e
         return return_data
 
-def get_orders(apikey, url="https://api.slyk.io/orders"):  
+def get_orders(apikey, url="https://api.slyk.io/orders?page[size]=100&sorted=createdAt"):  
         return_data = {}
         try:
                 req = request.Request(url, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
