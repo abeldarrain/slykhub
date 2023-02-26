@@ -13,6 +13,12 @@ from .api import(
 )
 from .postapi import complete_task
 from .util import convert
+from collections import OrderedDict
+
+
+from datetime import timedelta
+import datetime
+from dateutil.relativedelta import relativedelta
 
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
@@ -54,7 +60,7 @@ def tasks():
     rows=[]
     tasks=[]
     user_data = get_verified_users(session['api_key'])
-    if user_data is HTTPError:
+    if isinstance(user_data,HTTPError):
         error = user_data
     else:
         for user in user_data['data']:
@@ -149,3 +155,274 @@ def sales():
                            payment_methods=list(payment_methods.keys()), payment_methods_data=payment_methods_data,
                            orders_prices=orders_prices_by_asset, orders_prices_data = orders_prices_data,
                            assets=eassets)
+
+@bp.route('/users')
+@login_required
+def users():
+    error =''
+    orders = get_orders(session['api_key'])
+    if isinstance(orders,Exception):
+        error = orders        
+        
+    ############################################User Growth################3
+    new_users_by_date ={}
+    
+    users = get_verified_users(session['api_key'])
+    if isinstance(users,HTTPError):
+        error = users
+    else:
+        for user in users['data']:
+            date = user['createdAt']
+            formated_date = date[:10]
+            if new_users_by_date.get(formated_date):
+                new_users_by_date[formated_date] += 1  
+            else:
+                new_users_by_date[formated_date] = 1
+        new_users_by_date = dict(OrderedDict(sorted(new_users_by_date.items())))    
+    # print(new_users_by_date)
+    ################List of days from the beggining###################### 
+    timelapses = ['Last week', 'Last 2 weeks', 'Last month', 'Last 3 months', 'Last 6 months', 'Last year', 'All']
+       
+    today = datetime.date.today()
+    sdate = datetime.date.fromisoformat(list(new_users_by_date.keys())[0])
+    edate = today
+    date_list_complete = [sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_complete = list(map(lambda x: x.isoformat(), date_list_complete))
+    # print (date_list_complete)
+    
+    ###########################List of days from 1y ago#########################
+    sdate = today.replace(year= (today.year-1))
+    date_list_year_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_year_ago = list(map(lambda x: x.isoformat(), date_list_year_ago))
+    #print (date_list_year_ago)
+
+    ###########################List of days from 6m ago#########################
+    sdate = today - relativedelta(months=6)
+    date_list_six_months_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_six_months_ago = list(map(lambda x: x.isoformat(), date_list_six_months_ago))
+    #print (date_list_six_months_ago)
+    
+    ###########################List of days from 3m ago#########################
+    sdate = today- relativedelta(months=3)
+    date_list_three_months_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_three_months_ago = list(map(lambda x: x.isoformat(), date_list_three_months_ago))
+    #print (date_list_three_months_ago)
+    
+    ###########################List of days from 1m ago#########################
+    sdate = today- relativedelta(months=1)
+    date_list_one_month_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_one_month_ago = list(map(lambda x: x.isoformat(), date_list_one_month_ago))
+    #print (date_list_one_month_ago)
+    
+    ###########################List of days from 2w ago#########################
+    sdate = today- relativedelta(weeks=2)
+    date_list_two_weeks_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_two_weeks_ago = list(map(lambda x: x.isoformat(), date_list_two_weeks_ago))
+    #print (date_list_two_weeks_ago)
+    
+    ###########################List of days from 1w ago#########################
+    sdate = today- relativedelta(weeks=1)
+    date_list_one_week_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_one_week_ago = list(map(lambda x: x.isoformat(), date_list_one_week_ago))
+    #print (date_list_one_week_ago)
+    
+    # update dict for every date
+    from .util import get_dict_user_growth
+    
+    new_users_by_date_complete = get_dict_user_growth(new_users_by_date, date_list_complete)
+    new_users_by_date_1year = get_dict_user_growth(new_users_by_date, date_list_year_ago)
+    new_users_by_date_6months = get_dict_user_growth(new_users_by_date, date_list_six_months_ago)
+    new_users_by_date_3months = get_dict_user_growth(new_users_by_date, date_list_three_months_ago)
+    new_users_by_date_1month = get_dict_user_growth(new_users_by_date, date_list_one_month_ago)
+    new_users_by_date_2weeks = get_dict_user_growth(new_users_by_date, date_list_two_weeks_ago)
+    new_users_by_date_1week = get_dict_user_growth(new_users_by_date, date_list_one_week_ago)
+    
+    
+    new_users_by_date_complete_dataset = [{
+                        'label': 'New users',
+                        'data': list(new_users_by_date_complete.values()),
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+    new_users_by_date_1year_dataset = [{
+                        'label': 'New users',
+                        'data': list(new_users_by_date_1year.values()),
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+    new_users_by_date_6months_dataset = [{
+                        'label': 'New users',
+                        'data': list(new_users_by_date_6months.values()),
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+    new_users_by_date_3months_dataset = [{
+                        'label': 'New users',
+                        'data': list(new_users_by_date_3months.values()),
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+    new_users_by_date_1month_dataset = [{
+                        'label': 'New users',
+                        'data': list(new_users_by_date_1month.values()),
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+    new_users_by_date_2weeks_dataset = [{
+                        'label': 'New users',
+                        'data': list(new_users_by_date_2weeks.values()),
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+    new_users_by_date_1week_dataset = [{
+                        'label': 'New users',
+                        'data': list(new_users_by_date_1week.values()),
+                        'borderWidth': 2,
+                        'spacing': 1
+                    }]
+    ########################################Total users####################3
+    
+    from .util import get_stacked_users_dict, get_stacked_active_users_dict
+    
+    total_users_complete = get_stacked_users_dict(new_users_by_date_complete, date_list_complete)
+    total_users_1year = get_stacked_users_dict(new_users_by_date_complete, date_list_year_ago)
+    total_users_6months = get_stacked_users_dict(new_users_by_date_complete, date_list_six_months_ago)
+    total_users_3months = get_stacked_users_dict(new_users_by_date_complete, date_list_three_months_ago)
+    total_users_1month = get_stacked_users_dict(new_users_by_date_complete, date_list_one_month_ago)
+    total_users_2weeks = get_stacked_users_dict(new_users_by_date_complete, date_list_two_weeks_ago)
+    total_users_1week = get_stacked_users_dict(new_users_by_date_complete, date_list_one_week_ago)
+     
+    total_active_users_complete = get_stacked_active_users_dict(orders, date_list_complete, date_list_complete)
+    total_active_users_1year = get_stacked_active_users_dict(orders, date_list_year_ago, date_list_complete)
+    total_active_users_6months = get_stacked_active_users_dict(orders, date_list_six_months_ago, date_list_complete)
+    total_active_users_3months = get_stacked_active_users_dict(orders, date_list_three_months_ago, date_list_complete)
+    total_active_users_1month = get_stacked_active_users_dict(orders, date_list_one_month_ago, date_list_complete)
+    total_active_users_2weeks = get_stacked_active_users_dict(orders, date_list_two_weeks_ago, date_list_complete)
+    total_active_users_1week = get_stacked_active_users_dict(orders, date_list_one_week_ago, date_list_complete)
+    
+    total_users_complete_dataset =[{
+       'label': 'Total users',
+                        'data': list(total_users_complete.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                   {
+       'label': 'Total active users',
+                        'data': list(total_active_users_complete.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    }]
+    total_users_1year_dataset =[{
+       'label': 'Total users',
+                        'data': list(total_users_1year.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                {
+       'label': 'Total active users',
+                        'data': list(total_active_users_1year.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    }]
+    total_users_6months_dataset =[{
+       'label': 'Total users',
+                        'data': list(total_users_6months.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                  {
+       'label': 'Total active users',
+                        'data': list(total_active_users_6months.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    }]
+    total_users_3months_dataset =[{
+       'label': 'Total users',
+                        'data': list(total_users_3months.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                  {
+       'label': 'Total active users',
+                        'data': list(total_active_users_3months.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    }]
+    total_users_1month_dataset =[{
+       'label': 'Total users',
+                        'data': list(total_users_1month.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                 {
+       'label': 'Total active users',
+                        'data': list(total_active_users_1month.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    }]
+    total_users_2weeks_dataset =[{
+       'label': 'Total users',
+                        'data': list(total_users_2weeks.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                 {
+       'label': 'Total active users',
+                        'data': list(total_active_users_2weeks.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    }]
+    total_users_1week_dataset =[{
+       'label': 'Total users',
+                        'data': list(total_users_1week.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    },
+                                {
+       'label': 'Total active users',
+                        'data': list(total_active_users_1week.values()),
+                        'borderWidth': 2,
+                        'spacing': 1        
+    }]
+    
+    ###############################Total active users####################
+    
+    
+    
+    
+    
+    
+      
+    #######################################################################
+    if error:
+        flash(error, 'error')
+    return render_template('dashboard/users.html',
+                           timelapses=timelapses,
+                           date_list_complete = date_list_complete,
+                           date_list_year_ago = date_list_year_ago,
+                           date_list_six_months_ago=date_list_six_months_ago,
+                           date_list_three_months_ago=date_list_three_months_ago,
+                           date_list_one_month_ago=date_list_one_month_ago,
+                           date_list_two_weeks_ago=date_list_two_weeks_ago,
+                           date_list_one_week_ago=date_list_one_week_ago,
+                           
+                           new_users_by_date_complete_dataset=new_users_by_date_complete_dataset, 
+                           new_users_by_date_1year_dataset=new_users_by_date_1year_dataset,
+                           new_users_by_date_6months_dataset=new_users_by_date_6months_dataset,
+                           new_users_by_date_3months_dataset=new_users_by_date_3months_dataset,
+                           new_users_by_date_1month_dataset=new_users_by_date_1month_dataset,
+                           new_users_by_date_2weeks_dataset=new_users_by_date_2weeks_dataset,
+                           new_users_by_date_1week_dataset=new_users_by_date_1week_dataset,
+                           
+                           total_users_complete_dataset = total_users_complete_dataset,
+                           total_users_1year_dataset = total_users_1year_dataset,
+                           total_users_6months_dataset=total_users_6months_dataset,
+                           total_users_3months_dataset=total_users_3months_dataset,
+                           total_users_1month_dataset=total_users_1month_dataset,
+                           total_users_2weeks_dataset=total_users_2weeks_dataset,
+                           total_users_1week_dataset=total_users_1week_dataset
+                           )
+    
+    
+    
+    

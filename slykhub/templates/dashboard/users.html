@@ -1,0 +1,190 @@
+{% extends 'dashboard/home.html' %}
+
+{% block title %}Users{% endblock title %}
+{% block Dcss %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/dashboard/users.css')}}" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock Dcss %}
+
+{% block Dcontent%}
+<div class = "text-center">
+                <a class="btn btn-outline-dark dropdown-toggle" id ="timelapsebtn" data-bs-toggle="dropdown" href="#">
+                  {{timelapses[1]}}<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    {% for lapse in timelapses%}
+                            <li><a class="dropdown-item" href="#">{{lapse}}</a></li>
+                        {% endfor %}
+                </ul>
+                <input type="hidden" id="selected_timelapse" value="{{timelapses[1]}}" />
+            </div>
+<div class="row py-2 text-justify">
+    <div class="card"  id="NewUsersInTimeCard">
+        <div class="card-header bg-primary text-white">
+            <div class="row w-100 text-center">
+            <h3>User Growth</h3>
+            </div>
+        </div>
+
+        <div class="card-body" id="NewUsersInTime">
+            
+            <canvas id="NewUsersInTimeChart" class="chart-container"></canvas>
+            <script>
+                const NUBD = document.getElementById('NewUsersInTimeChart');
+
+                var NUBDchart = new Chart(NUBD, {
+                    type: 'bar',
+                    data: {
+                    labels: {{date_list_two_weeks_ago |tojson}},
+                    datasets: {{new_users_by_date_2weeks_dataset | tojson}}
+                    },
+                    options: {
+                            responsive:true,
+                            scales: {
+                                y: {
+                                  beginAtZero: true
+                                }
+                            }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+    <div class="card"  id="TotalUsersInTimeCard">
+        <div class="card-header bg-primary text-white">
+            <div class="row w-100 text-center">
+            <h3>Total users</h3>
+            </div>
+        </div>
+
+        <div class="card-body" id="TotalUsersInTime">
+            
+            <canvas id="TotalUsersInTimeChart" class="chart-container"></canvas>
+            <script>
+                const TUBD = document.getElementById('TotalUsersInTimeChart');
+
+                var TUBDchart = new Chart(TUBD, {
+                    type: 'line',
+                    data: {
+                    labels: {{date_list_two_weeks_ago |tojson}},
+                    datasets: {{total_users_2weeks_dataset | tojson}}
+                    },
+                    options: {
+                            responsive:true,
+                            scales: {
+                                y: {
+                                  beginAtZero: true
+                                }
+                            }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+
+
+
+
+
+<script type="text/javascript">
+    $(".dropdown-menu li a").click(function(){
+  
+        $("#timelapsebtn").html($(this).text()+' <span class="caret"></span>');
+      
+        $("input[id='selected_timelapse']").val($(this).text());
+
+        console.log('refresh charts');
+        tl = document.getElementById('selected_timelapse').value;
+        switch(tl) {
+            case 'Last week':
+            NUBDchart.data.datasets = {{new_users_by_date_1week_dataset | tojson}}
+            TUBDchart.data.datasets = {{total_users_1week_dataset | tojson}}
+
+
+            NUBDchart.data.labels= {{date_list_one_week_ago |tojson}};
+            NUBDchart.update();
+            TUBDchart.data.labels= {{date_list_one_week_ago |tojson}};
+            TUBDchart.update();
+              break;
+
+            case 'Last 2 weeks':
+            NUBDchart.data.datasets = {{new_users_by_date_2weeks_dataset | tojson}}
+            TUBDchart.data.datasets = {{total_users_2weeks_dataset | tojson}}
+
+            
+            NUBDchart.data.labels= {{date_list_two_weeks_ago |tojson}};
+            NUBDchart.update();
+            TUBDchart.data.labels= {{date_list_two_weeks_ago |tojson}};
+            TUBDchart.update();
+              break;
+
+            case 'Last month':
+            NUBDchart.data.datasets = {{new_users_by_date_1month_dataset | tojson}}
+            TUBDchart.data.datasets = {{total_users_1month_dataset | tojson}}
+
+
+            NUBDchart.data.labels= {{date_list_one_month_ago |tojson}};
+            NUBDchart.update();
+            TUBDchart.data.labels= {{date_list_one_month_ago |tojson}};
+            TUBDchart.update();
+                break;
+
+            case 'Last 3 months':
+            NUBDchart.data.datasets = {{new_users_by_date_3months_dataset | tojson}}
+            TUBDchart.data.datasets = {{total_users_3months_dataset | tojson}}
+
+
+            NUBDchart.data.labels= {{date_list_three_months_ago |tojson}};
+            NUBDchart.update();
+            TUBDchart.data.labels= {{date_list_three_months_ago |tojson}};
+            TUBDchart.update();
+                break;
+
+            case 'Last 6 months':
+            NUBDchart.data.datasets = {{new_users_by_date_6months_dataset | tojson}}
+            TUBDchart.data.datasets = {{total_users_6months_dataset | tojson}}
+
+
+            NUBDchart.data.labels= {{date_list_six_months_ago |tojson}};
+            NUBDchart.update();
+            TUBDchart.data.labels= {{date_list_six_months_ago |tojson}};
+            TUBDchart.update();
+                break;
+
+            case 'Last year':
+            NUBDchart.data.datasets = {{new_users_by_date_1year_dataset | tojson}}
+            TUBDchart.data.datasets = {{total_users_1year_dataset | tojson}}
+
+
+            NUBDchart.data.labels= {{date_list_year_ago |tojson}};
+            NUBDchart.update();
+            TUBDchart.data.labels= {{date_list_year_ago |tojson}};
+            TUBDchart.update();
+                break;
+
+            case 'All':
+            NUBDchart.data.datasets = {{new_users_by_date_complete_dataset | tojson}}
+            TUBDchart.data.datasets = {{total_users_complete_dataset | tojson}}
+
+
+            NUBDchart.data.labels= {{date_list_complete |tojson}};
+            NUBDchart.update();
+            TUBDchart.data.labels= {{date_list_complete |tojson}};
+            TUBDchart.update();
+                break;
+
+            default:
+            NUBDchart.data.datasets = {{new_users_by_date_2weeks_dataset | tojson}}
+            TUBDchart.data.datasets = {{total_users_2weeks_dataset | tojson}}
+
+            
+            NUBDchart.data.labels= {{date_list_two_weeks_ago |tojson}};
+            NUBDchart.update();
+            TUBDchart.data.labels= {{date_list_two_weeks_ago |tojson}};
+            TUBDchart.update();
+          }
+      });
+</script>
+</div>
+{% endblock Dcontent %}
