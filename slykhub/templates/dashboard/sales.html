@@ -9,6 +9,46 @@
 
 {% block Dcontent%}
 <div class="row py-2 text-justify">
+    <div class="card"  id="TotalOrdersInTimeCard">
+        <div class="card-header bg-primary text-white text-center">
+            <div class="row text-center">
+            <h3>Orders by Date</h3>
+            <a class="btn btn-outline-white dropdown-toggle text-white" id ="timelapsebtn" data-bs-toggle="dropdown" href="#">
+                {{timelapses[1]}}<span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                  {% for lapse in timelapses%}
+                          <li><a class="dropdown-item" href="#">{{lapse}}</a></li>
+                      {% endfor %}
+              </ul>
+              <input type="hidden" id="selected_timelapse" value="{{timelapses[1]}}" />
+            </div>
+        </div>
+
+        <div class="card-body" id="TotalOrdersInTime">
+            
+            <canvas id="TotalOrdersInTimeChart" class="chart-container"></canvas>
+            <script>
+                const TOBD = document.getElementById('TotalOrdersInTimeChart');
+
+                var TOBDchart = new Chart(TOBD, {
+                    type: 'line',
+                    data: {
+                    labels: {{date_list_two_weeks_ago |tojson}},
+                    datasets: {{orders_by_date_2weeks_dataset | tojson}}
+                    },
+                    options: {
+                            responsive:true,
+                            scales: {
+                                y: {
+                                  beginAtZero: true
+                                }
+                            }
+                    }
+                });
+            </script>
+        </div>
+    </div>
         <div class="card"  id="OrdersByPriceCard">
             <div class="card-header bg-primary text-white">
                 <div class="row w-100 text-center">
@@ -104,4 +144,80 @@
 
     </div>
 <script type="text/javascript" src="{{url_for('static', filename='js/sales/dropdown.js')}}"></script>
+<script type="text/javascript">
+    $(".dropdown-menu li a").click(function(){
+  
+        $("#timelapsebtn").html($(this).text()+' <span class="caret"></span>');
+      
+        $("input[id='selected_timelapse']").val($(this).text());
+
+        console.log('refresh charts');
+        tl = document.getElementById('selected_timelapse').value;
+        switch(tl) {
+            case 'Last week':
+           
+            TOBDchart.data.datasets = {{orders_by_date_1week_dataset | tojson}}
+
+
+            TOBDchart.data.labels= {{date_list_one_week_ago |tojson}};
+            TOBDchart.update();
+              break;
+
+            case 'Last 2 weeks':
+            TOBDchart.data.datasets = {{orders_by_date_2weeks_dataset | tojson}}
+
+            
+            TOBDchart.data.labels= {{date_list_two_weeks_ago |tojson}};
+            TOBDchart.update();
+              break;
+
+            case 'Last month':
+            TOBDchart.data.datasets = {{orders_by_date_1month_dataset | tojson}}
+
+
+            TOBDchart.data.labels= {{date_list_one_month_ago |tojson}};
+            TOBDchart.update();
+                break;
+
+            case 'Last 3 months':
+            TOBDchart.data.datasets = {{orders_by_date_3months_dataset | tojson}}
+
+
+            TOBDchart.data.labels= {{date_list_three_months_ago |tojson}};
+            TOBDchart.update();
+                break;
+
+            case 'Last 6 months':
+            TOBDchart.data.datasets = {{orders_by_date_6months_dataset | tojson}}
+
+
+            TOBDchart.data.labels= {{date_list_six_months_ago |tojson}};
+            TOBDchart.update();
+                break;
+
+            case 'Last year':
+            TOBDchart.data.datasets = {{orders_by_date_1year_dataset | tojson}}
+
+
+            TOBDchart.data.labels= {{date_list_year_ago |tojson}};
+            TOBDchart.update();
+                break;
+
+            case 'All':
+            TOBDchart.data.datasets = {{orders_by_date_complete_dataset | tojson}}
+
+
+            TOBDchart.data.labels= {{date_list_complete |tojson}};
+            TOBDchart.update();
+                break;
+
+            default:
+            TOBDchart.data.datasets = {{orders_by_date_2weeks_dataset | tojson}}
+
+            
+            TOBDchart.data.labels= {{date_list_two_weeks_ago |tojson}};
+            TOBDchart.update();
+          }
+      });
+</script>
 {% endblock Dcontent %}

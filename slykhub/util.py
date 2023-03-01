@@ -1,5 +1,5 @@
 from decimal import *
-from .api import get_rates
+from .api import get_rates, get_verified_users
 from urllib.error import HTTPError
 
 def get_task_id(task, tasks):
@@ -63,6 +63,7 @@ def get_stacked_users_dict(user_growth_dict, list_of_dates):
     return total_users_by_date_given
 
 def get_stacked_active_users_dict(orders, list_of_dates, list_of_dates_complete):
+    
     ids = []
     total = 0
     orders_dict = {}
@@ -96,3 +97,50 @@ def get_stacked_active_users_dict(orders, list_of_dates, list_of_dates_complete)
         total_active_users_by_date_given[day] = total
           
     return total_active_users_by_date_given
+
+def get_dict_orders_growth(orders_growth_dict, list_of_dates):
+    total = 0
+    orders_by_date_given = {}
+    ##########get stacked orderss til date##############
+    if list_of_dates[0] in list(orders_growth_dict.keys()):
+        stop = list_of_dates[0]
+        for i in orders_growth_dict.keys():   
+            if i == stop:
+                break
+            else:
+                total += orders_growth_dict[i]
+    
+    ####make dict####
+    for day in list_of_dates:
+        if day in orders_growth_dict:
+            total += orders_growth_dict[day]
+        orders_by_date_given[day] = total
+        
+    
+    return orders_by_date_given
+
+def get_top_buyers_by_amount(orders, users):
+    dict = {}
+    for order in orders['data']:
+        if order['userId'] in dict:
+            dict[order['userId']][1] += order['amount']
+        else:
+            user = get_user_by_id_from_given_list(order['userId'], users)
+            dict[order['userId']] = [user['name'], order['amount']]
+    return dict       
+     
+def get_top_buyers_by_frequency(orders, users):
+    dict = {}
+    for order in orders['data']:
+        if order['userId'] in dict:
+            dict[order['userId']][1] +=1
+        else:
+            user = get_user_by_id_from_given_list(order['userId'], users)
+            dict[order['userId']] = [user['name'], 1]
+    return dict  
+
+def get_user_by_id_from_given_list(id, users):
+    for user in users['data']:
+        if user['id'] == id:
+            return user
+    return None

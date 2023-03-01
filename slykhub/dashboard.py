@@ -91,6 +91,7 @@ def tasks():
 @bp.route('/sales')
 @login_required
 def sales():
+    
     error=''
     orders = get_orders(session['api_key'])
     apiassets = get_enabled_assets(session['api_key'])
@@ -102,6 +103,121 @@ def sales():
     for ea in apiassets['data']:
         eassets.append(ea['code'])   
     else: 
+        #########################ORDERS BY DATE CHART##############################
+        from .util import get_dict_user_growth
+        orders_by_date = {}
+        
+        for order in orders['data']:
+            date = order['createdAt']
+            formated_date = date[:10]
+            if orders_by_date.get(formated_date):
+                orders_by_date[formated_date] += 1  
+            else:
+                orders_by_date[formated_date] = 1
+        
+            
+        ################List of days from the beggining###################### 
+        timelapses = ['Last week', 'Last 2 weeks', 'Last month', 'Last 3 months', 'Last 6 months', 'Last year', 'All']
+        
+        today = datetime.date.today()
+        sdate = datetime.date.fromisoformat(list(orders_by_date.keys())[0])
+        edate = today
+        date_list_complete = [sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+        date_list_complete = list(map(lambda x: x.isoformat(), date_list_complete))
+        # print (date_list_complete)
+            ###########################List of days from 1y ago#########################
+        sdate = today.replace(year= (today.year-1))
+        date_list_year_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+        date_list_year_ago = list(map(lambda x: x.isoformat(), date_list_year_ago))
+        #print (date_list_year_ago)
+
+        ###########################List of days from 6m ago#########################
+        sdate = today - relativedelta(months=6)
+        date_list_six_months_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+        date_list_six_months_ago = list(map(lambda x: x.isoformat(), date_list_six_months_ago))
+        #print (date_list_six_months_ago)
+        
+        ###########################List of days from 3m ago#########################
+        sdate = today- relativedelta(months=3)
+        date_list_three_months_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+        date_list_three_months_ago = list(map(lambda x: x.isoformat(), date_list_three_months_ago))
+        #print (date_list_three_months_ago)
+        
+        ###########################List of days from 1m ago#########################
+        sdate = today- relativedelta(months=1)
+        date_list_one_month_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+        date_list_one_month_ago = list(map(lambda x: x.isoformat(), date_list_one_month_ago))
+        #print (date_list_one_month_ago)
+        
+        ###########################List of days from 2w ago#########################
+        sdate = today- relativedelta(weeks=2)
+        date_list_two_weeks_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+        date_list_two_weeks_ago = list(map(lambda x: x.isoformat(), date_list_two_weeks_ago))
+        #print (date_list_two_weeks_ago)
+        
+        ###########################List of days from 1w ago#########################
+        sdate = today- relativedelta(weeks=1)
+        date_list_one_week_ago =[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+        date_list_one_week_ago = list(map(lambda x: x.isoformat(), date_list_one_week_ago))
+        #print (date_list_one_week_ago)
+        
+        from .util import get_dict_orders_growth
+        orders_by_date = dict(OrderedDict(sorted(orders_by_date.items())))
+        
+         
+        
+        orders_by_date_complete = get_dict_user_growth(orders_by_date, date_list_complete)
+        orders_by_date_1year = get_dict_user_growth(orders_by_date, date_list_year_ago)
+        orders_by_date_6months = get_dict_user_growth(orders_by_date, date_list_six_months_ago)
+        orders_by_date_3months = get_dict_user_growth(orders_by_date, date_list_three_months_ago)
+        orders_by_date_1month = get_dict_user_growth(orders_by_date, date_list_one_month_ago)
+        orders_by_date_2weeks = get_dict_user_growth(orders_by_date, date_list_two_weeks_ago)
+        orders_by_date_1week = get_dict_user_growth(orders_by_date, date_list_one_week_ago)
+        
+        
+        orders_by_date_complete_dataset = [{
+                            'label': 'New orders',
+                            'data': list(orders_by_date_complete.values()),
+                            'borderWidth': 2,
+                            'spacing': 1
+                        }]
+        orders_by_date_1year_dataset = [{
+                            'label': 'New orders',
+                            'data': list(orders_by_date_1year.values()),
+                            'borderWidth': 2,
+                            'spacing': 1
+                        }]
+        orders_by_date_6months_dataset = [{
+                            'label': 'New orders',
+                            'data': list(orders_by_date_6months.values()),
+                            'borderWidth': 2,
+                            'spacing': 1
+                        }]
+        orders_by_date_3months_dataset = [{
+                            'label': 'New orders',
+                            'data': list(orders_by_date_3months.values()),
+                            'borderWidth': 2,
+                            'spacing': 1
+                        }]
+        orders_by_date_1month_dataset = [{
+                            'label': 'New orders',
+                            'data': list(orders_by_date_1month.values()),
+                            'borderWidth': 2,
+                            'spacing': 1
+                        }]
+        orders_by_date_2weeks_dataset = [{
+                            'label': 'New orders',
+                            'data': list(orders_by_date_2weeks.values()),
+                            'borderWidth': 2,
+                            'spacing': 1
+                        }]
+        orders_by_date_1week_dataset = [{
+                        'label': 'New orders',
+                            'data': list(orders_by_date_1week.values()),
+                            'borderWidth': 2,
+                            'spacing': 1
+                        }]
+        
         ######################################Payment methods Chart################################
         payment_methods = {}
         orders_prices ={}
@@ -146,15 +262,73 @@ def sales():
         'tension': 0.1
         }]
         print(f'This is the Dict im sending {orders_prices_by_asset}')    
-            
-            
+        #########################################TOP BuYERS###############################
+        from .util import get_top_buyers_by_amount, get_top_buyers_by_frequency
+        
+        top_buyers_by_amount={}
+        top_buyers_by_frequency ={}
+        top_buyers_labels = ['Name', 'Amount']
+        user_data = get_verified_users(session['api_key'])
+        if isinstance(user_data,HTTPError):
+            error = user_data
+        else:   
+            top_buyers_by_amount = get_top_buyers_by_amount(orders, user_data)
+            top_buyers_by_frequency = get_top_buyers_by_frequency(orders, user_data)
+        
+        #print(f'USERS BY AMOUNT LIST: {top_buyers_by_amount}')
+        # print('######################################################')
+        # print(f'USERS BY FREQUENCY LIST: {top_buyers_by_frequency}')
+        
+        top_buyers_by_amount = sorted(list(top_buyers_by_amount.values()), key=lambda x: x[1], reverse=True)
+        top_buyers_by_frequency = sorted(list(top_buyers_by_frequency.values()), key=lambda x: x[1], reverse=True)
+        # print('######################################################')
+        #print(f'USERS BY FREQUENCY LIST SORTED: {top_buyers_by_frequency}')
+        
+        top_buyers_by_amount_names = []
+        top_buyers_by_amount_data =  []
+        for i in top_buyers_by_amount:
+            top_buyers_by_amount_names.append(i[0])
+            top_buyers_by_amount_data.append(i[1])
+        
+        
+        top_buyers_by_frequency_names = []
+        top_buyers_by_frequency_data = []
+        for i in top_buyers_by_frequency:
+            top_buyers_by_frequency_names.append(i[0])
+            top_buyers_by_frequency_data.append(i[1])
+        
+       
+        
         #######################################End##########################    
         if error:
             flash(error, 'error')
         return render_template('dashboard/sales.html',
                            payment_methods=list(payment_methods.keys()), payment_methods_data=payment_methods_data,
                            orders_prices=orders_prices_by_asset, orders_prices_data = orders_prices_data,
-                           assets=eassets)
+                           assets=eassets,
+                           timelapses=timelapses,
+                           date_list_complete = date_list_complete,
+                           date_list_year_ago = date_list_year_ago,
+                           date_list_six_months_ago=date_list_six_months_ago,
+                           date_list_three_months_ago=date_list_three_months_ago,
+                           date_list_one_month_ago=date_list_one_month_ago,
+                           date_list_two_weeks_ago=date_list_two_weeks_ago,
+                           date_list_one_week_ago=date_list_one_week_ago,
+                           
+                           orders_by_date_complete_dataset=orders_by_date_complete_dataset, 
+                           orders_by_date_1year_dataset=orders_by_date_1year_dataset,
+                           orders_by_date_6months_dataset=orders_by_date_6months_dataset,
+                           orders_by_date_3months_dataset=orders_by_date_3months_dataset,
+                           orders_by_date_1month_dataset=orders_by_date_1month_dataset,
+                           orders_by_date_2weeks_dataset=orders_by_date_2weeks_dataset,
+                           orders_by_date_1week_dataset=orders_by_date_1week_dataset,
+                           
+                           top_buyers_labels=top_buyers_labels,
+                           top_buyers_by_amount_names = top_buyers_by_amount_names,
+                           top_buyers_by_amount_data = top_buyers_by_amount_data,
+                           top_buyers_by_frequency_names = top_buyers_by_frequency_names,
+                           top_buyers_by_frequency_data = top_buyers_by_frequency_data
+                           )
 
 @bp.route('/users')
 @login_required
@@ -291,7 +465,7 @@ def users():
     total_users_1month = get_stacked_users_dict(new_users_by_date_complete, date_list_one_month_ago)
     total_users_2weeks = get_stacked_users_dict(new_users_by_date_complete, date_list_two_weeks_ago)
     total_users_1week = get_stacked_users_dict(new_users_by_date_complete, date_list_one_week_ago)
-     
+       ###############################Total active users####################
     total_active_users_complete = get_stacked_active_users_dict(orders, date_list_complete, date_list_complete)
     total_active_users_1year = get_stacked_active_users_dict(orders, date_list_year_ago, date_list_complete)
     total_active_users_6months = get_stacked_active_users_dict(orders, date_list_six_months_ago, date_list_complete)
@@ -384,15 +558,8 @@ def users():
                         'borderWidth': 2,
                         'spacing': 1        
     }]
-    
-    ###############################Total active users####################
-    
-    
-    
-    
-    
-    
-      
+
+     
     #######################################################################
     if error:
         flash(error, 'error')

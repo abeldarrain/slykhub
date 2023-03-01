@@ -293,6 +293,22 @@ def get_rates(apikey, fromasset, toasset, url="https://api.slyk.io/rates"):
         return return_data
 
 
+def get_user_by_id(apikey, id, url="https://api.slyk.io/users"): 
+        return_data = {}
+        finalurl = str(f'{url}/{id}')
+        print(f'This is the final URL: {finalurl}')
+        try:
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+        except HTTPError as e:
+                print(e)
+                return e
+        except Exception as e:
+                return e
+        
+        return return_data
 
 
 
