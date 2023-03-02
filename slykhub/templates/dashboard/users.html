@@ -5,11 +5,45 @@
 
 <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard/users.css')}}" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{url_for('static', filename='js/users/userstable.js')}}" ></script>
 {% endblock Dcss %}
 
 {% block Dcontent%}
+    <div class="card">
+    <div class="card-header bg-primary">
+   <h3 class="text-center text-white">Slyk Users</h3>
+</div>
+<div class="card-body">   
+    <div class=" w-100 text-end">
+        <button class="btn btn-lg btn-primary text-center" id="btnExport">Export to csv</button>
+    </div>
+<table class="table" id="usertable">
+  <thead>
+    <tr>
+      {% for header in  user_table_headers%}
+          <th>{{header}}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in  user_table_rows%}
+      <tr>
+      {% for cell in  row[:-1]%}
+      <td>{{cell}}</td>
+      {% endfor %}
+      <!--WITH BALANCE-->
+      <td>{%for data in row[-1]%}{{data['assetCode']}}: {{ data['amount']}}</br>{% endfor %}</td>
+      </tr>
+    {% endfor %}  
+  </tbody>
+</table>
+</div>
+</div>
+<div class="card">
+<div class="card-header bg-primary">
 <div class = "text-center">
-                <a class="btn btn-outline-dark dropdown-toggle" id ="timelapsebtn" data-bs-toggle="dropdown" href="#">
+    <h3 class="text-white">User Growth</h3>
+                <a class="btn btn-outline-white text-white dropdown-toggle" id ="timelapsebtn" data-bs-toggle="dropdown" href="#">
                   {{timelapses[1]}}<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
@@ -19,11 +53,13 @@
                 </ul>
                 <input type="hidden" id="selected_timelapse" value="{{timelapses[1]}}" />
             </div>
+        </div>
+        <div class="card-body">  
 <div class="row py-2 text-justify">
     <div class="card"  id="NewUsersInTimeCard">
         <div class="card-header bg-primary text-white">
             <div class="row w-100 text-center">
-            <h3>User Growth</h3>
+            <h3>New Slyk users</h3>
             </div>
         </div>
 
@@ -54,7 +90,7 @@
     <div class="card"  id="TotalUsersInTimeCard">
         <div class="card-header bg-primary text-white">
             <div class="row w-100 text-center">
-            <h3>Total users</h3>
+            <h3>Total Slyk users</h3>
             </div>
         </div>
 
@@ -82,6 +118,8 @@
             </script>
         </div>
     </div>
+</div>
+</div>
 
 
 

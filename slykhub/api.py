@@ -150,8 +150,9 @@ def get_wallet_balance(apikey, id):
     try:
         url="https://api.slyk.io/wallets/"+id+"/balance"
         req = request.Request(url, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
-        data = request.urlopen(req, timeout = 100)
+        data = request.urlopen(req, timeout = 10000)
         json_data = json.loads(data.read())
+        print(f'Returning wallet balance for {id}')
         return json_data
     except error as e:
         print(e)

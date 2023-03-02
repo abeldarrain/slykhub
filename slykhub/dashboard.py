@@ -333,15 +333,36 @@ def sales():
 @bp.route('/users')
 @login_required
 def users():
-    error =''
+    error =''   
+    
+    
     orders = get_orders(session['api_key'])
     if isinstance(orders,Exception):
         error = orders        
-        
+    user_table_headers=('User','Email', 'Balance')
+    user_table_rows=[]
+    users = get_verified_users(session['api_key'])
+    if isinstance(users,HTTPError):
+        error = users
+    else:
+        for user in users['data']:
+            if 'user' in user['roles']:
+                (username, email, ids) = (user['name'], user['email'], user['id'])
+                ######################### With Balance ################# 
+                wallet = user['primaryWalletId']
+                #balancedata = get_wallet_balance(session['api_key'], wallet)
+                balancedata = {'data': [{'assetCode': 'btc', 'amount': 0.02}, {'assetCode': 'qva', 'amount': 200}]}
+                if balancedata is HTTPError:
+                    error = balancedata
+                else:  
+                    balance = balancedata['data']
+                    user_table_rows.append((username, email, balance))
+                ######################### Without Balance #################
+                #rows.append((username, email, ids))
+                ######################### END #################
     ############################################User Growth################3
     new_users_by_date ={}
     
-    users = get_verified_users(session['api_key'])
     if isinstance(users,HTTPError):
         error = users
     else:
@@ -564,6 +585,9 @@ def users():
     if error:
         flash(error, 'error')
     return render_template('dashboard/users.html',
+                           user_table_headers=user_table_headers,
+                           user_table_rows=user_table_rows,
+                           
                            timelapses=timelapses,
                            date_list_complete = date_list_complete,
                            date_list_year_ago = date_list_year_ago,
