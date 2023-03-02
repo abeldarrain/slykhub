@@ -12,11 +12,11 @@
     <div class="card"  id="TotalOrdersInTimeCard">
         <div class="card-header bg-primary text-white text-center">
             <div class="row text-center">
-            <h3>Orders by Date</h3>
-            <a class="btn btn-outline-white dropdown-toggle text-white" id ="timelapsebtn" data-bs-toggle="dropdown" href="#">
+            <h3>Fullfilled Orders by Date</h3>
+            <a class="btn btn-outline-white dropdown-toggle text-white" id ="timelapsebtn" data-bs-toggle="dropdown" href="#TotalOrdersInTimeChart">
                 {{timelapses[1]}}<span class="caret"></span>
               </a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu" id="timelapsedropdown">
                   {% for lapse in timelapses%}
                           <li><a class="dropdown-item" href="#">{{lapse}}</a></li>
                       {% endfor %}
@@ -54,10 +54,10 @@
                 <div class="row w-100 text-center">
                 <h3>Orders by Price</h3>
                 <div class = "text-center">
-                    <a class="btn btn-outline-white dropdown-toggle text-white" id ="assetbtn" data-bs-toggle="dropdown" href="#">
+                    <a class="btn btn-outline-white dropdown-toggle text-white" id ="assetbtn" data-bs-toggle="dropdown" href="#OrdersByPriceChart">
                       {{assets[0]}}<span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" id="assetdropdown">
                         {% for asset in assets %}
                             <li><a class="dropdown-item" href="#">{{asset}}</a></li>
                         {% endfor %}
@@ -93,7 +93,7 @@
                           }
                           
                     });
-                    $(".dropdown-menu li a").click(function(){
+                    $("#assetdropdown li a").click(function(){
   
                         $("#assetbtn").html($(this).text()+' <span class="caret"></span>');
                       
@@ -137,15 +137,64 @@
             </script>
         </div>
     </div>
+</div>
+
     </div>
-
-    
-    
-
+    <div class="row">
+    <div class="card">
+        <div class="card-header">
+            <h3>Top buyers by completed orders</h3>
+        </div>
+    <div class="card-body">   
+        <table class="table" id="topBuyersFrequencyTable">
+            <thead>
+              <tr>
+                {% for header in  top_buyers_labels%}
+                    <th>{{header}}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in  top_buyers_by_frequency%}
+                <tr>
+                {% for cell in  row %}
+                <td>{{cell}}</td>
+                {% endfor %}
+                </tr>
+              {% endfor %}  
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3>Top buyers by funds spent</h3>
+            </div>
+        <div class="card-body">   
+            <table class="table" id="topBuyersAmountTable">
+                <thead>
+                  <tr>
+                    {% for header in  top_buyers_labels%}
+                        <th>{{header}}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in  top_buyers_by_amount%}
+                    <tr>
+                    {% for cell in  row %}
+                    <td>{{cell}}</td>
+                    {% endfor %}
+                    </tr>
+                  {% endfor %}  
+                </tbody>
+              </table>
+            </div>
+            </div>
     </div>
 <script type="text/javascript" src="{{url_for('static', filename='js/sales/dropdown.js')}}"></script>
 <script type="text/javascript">
-    $(".dropdown-menu li a").click(function(){
+    $("#timelapsedropdown li a").click(function(){
   
         $("#timelapsebtn").html($(this).text()+' <span class="caret"></span>');
       

@@ -275,12 +275,14 @@ def sales():
             top_buyers_by_amount = get_top_buyers_by_amount(orders, user_data)
             top_buyers_by_frequency = get_top_buyers_by_frequency(orders, user_data)
         
-        #print(f'USERS BY AMOUNT LIST: {top_buyers_by_amount}')
+        # print(f'USERS BY AMOUNT LIST: {top_buyers_by_amount}')
         # print('######################################################')
         # print(f'USERS BY FREQUENCY LIST: {top_buyers_by_frequency}')
         
         top_buyers_by_amount = sorted(list(top_buyers_by_amount.values()), key=lambda x: x[1], reverse=True)
         top_buyers_by_frequency = sorted(list(top_buyers_by_frequency.values()), key=lambda x: x[1], reverse=True)
+        
+        #print(f'USERS BY AMOUNT LIST SORTED: {top_buyers_by_amount}')
         # print('######################################################')
         #print(f'USERS BY FREQUENCY LIST SORTED: {top_buyers_by_frequency}')
         
@@ -324,10 +326,8 @@ def sales():
                            orders_by_date_1week_dataset=orders_by_date_1week_dataset,
                            
                            top_buyers_labels=top_buyers_labels,
-                           top_buyers_by_amount_names = top_buyers_by_amount_names,
-                           top_buyers_by_amount_data = top_buyers_by_amount_data,
-                           top_buyers_by_frequency_names = top_buyers_by_frequency_names,
-                           top_buyers_by_frequency_data = top_buyers_by_frequency_data
+                           top_buyers_by_amount = top_buyers_by_amount,
+                           top_buyers_by_frequency = top_buyers_by_frequency
                            )
 
 @bp.route('/users')

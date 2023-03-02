@@ -121,12 +121,22 @@ def get_dict_orders_growth(orders_growth_dict, list_of_dates):
 
 def get_top_buyers_by_amount(orders, users):
     dict = {}
+    
+    
     for order in orders['data']:
         if order['userId'] in dict:
-            dict[order['userId']][1] += order['amount']
+            value = Decimal(dict[order['userId']][1]) 
+            
+            newv = value + Decimal(order['amount'])
+            
+            #print(f'{value} + {Decimal(order["amount"])} = {newv}')
+            dict[order['userId']][1] = str(newv.normalize())
         else:
             user = get_user_by_id_from_given_list(order['userId'], users)
-            dict[order['userId']] = [user['name'], order['amount']]
+            am = str(Decimal(order['amount']).normalize())
+            #print(f'{order["amount"]} IS {am} in {order["id"]}')
+            dict[order['userId']] = [user['name'], am]
+    
     return dict       
      
 def get_top_buyers_by_frequency(orders, users):
