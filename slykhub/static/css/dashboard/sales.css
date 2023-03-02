@@ -14,13 +14,13 @@
 }
 #PaymentMethodsCard{
     align-self: right;
-    height: 375px;
+    height: 400px;
     width: 300px;
     align-items: center;
 }
 
 #OrdersByPriceCard{
-    height: 375px;
+    height: 420px;
     width: 650px;
     align-items: center;
 }

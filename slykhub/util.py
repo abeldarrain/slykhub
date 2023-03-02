@@ -144,8 +144,6 @@ def get_top_buyers_by_amount(orders, users):
 def get_top_buyers_by_frequency(orders, users):
     dict = {}
     for order in orders['data']:
-        if len(dict.keys()) >= 10:
-            return dict
         if order['userId'] in dict:
             dict[order['userId']][1] +=1
         else:
