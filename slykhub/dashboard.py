@@ -120,7 +120,10 @@ def sales():
         timelapses = ['Last week', 'Last 2 weeks', 'Last month', 'Last 3 months', 'Last 6 months', 'Last year', 'All']
         
         today = datetime.date.today()
-        sdate = datetime.date.fromisoformat(list(orders_by_date.keys())[0])
+        if list(orders_by_date.keys()):
+            sdate = datetime.date.fromisoformat(list(orders_by_date.keys())[0])
+        else:
+            sdate = today - relativedelta(days=1)
         edate = today
         date_list_complete = [sdate+timedelta(days=x) for x in range((edate-sdate).days)]
         date_list_complete = list(map(lambda x: x.isoformat(), date_list_complete))
@@ -267,7 +270,7 @@ def sales():
         
         top_buyers_by_amount={}
         top_buyers_by_frequency ={}
-        top_buyers_labels = ['Name', 'Amount']
+        top_buyers_labels = ['Name', 'Amount', 'Asset']
         user_data = get_verified_users(session['api_key'])
         if isinstance(user_data,HTTPError):
             error = user_data
@@ -347,15 +350,18 @@ def users():
     else:
         for user in users['data']:
             if 'user' in user['roles']:
-                (username, email, ids) = (user['name'], user['email'], user['id'])
+                (username, email) = (user['name'], user['email'])
                 ######################### With Balance ################# 
                 wallet = user['primaryWalletId']
-                #balancedata = get_wallet_balance(session['api_key'], wallet)
-                balancedata = {'data': [{'assetCode': 'btc', 'amount': 0.02}, {'assetCode': 'qva', 'amount': 200}]}
+                balancedata = get_wallet_balance(session['api_key'], wallet)
+                #balancedata = {'data': [{'assetCode': 'btc', 'amount': 0.02}, {'assetCode': 'qva', 'amount': 200}]}
                 if balancedata is HTTPError:
                     error = balancedata
                 else:  
-                    balance = balancedata['data']
+                    if balancedata['data']:
+                        balance = balancedata['data']
+                    else:
+                        balance = [{'assetCode': 'balance', 'amount': 'empty'}]
                     user_table_rows.append((username, email, balance))
                 ######################### Without Balance #################
                 #rows.append((username, email, ids))

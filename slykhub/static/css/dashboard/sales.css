@@ -29,17 +29,30 @@
     width: 100%;
     align-self: center;
 }
+#OrdersByPriceChart{
+    height: auto !important;
+    width: auto !important;
+}
 
 .card{
     margin: 20px;
+    align-items: stretch !important;
 }
-.row{
-    width: fit-content;
-    margin-right: 0 !important;
-    align-items: stretch;
+.card-body{
+    align-items: stretch !important;
 }
-.card-header{
-    width: 100%;
-    text-align: center !important;
-    
+
+
+
+td, th{
+    width: auto !important;
+
+    white-space:nowrap;
+}
+table{
+    width: 40%;
+}
+#OrdersByDateChart{
+    height: auto !important;
+    width: auto !important;
 }

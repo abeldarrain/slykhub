@@ -124,24 +124,28 @@ def get_top_buyers_by_amount(orders, users):
     
     
     for order in orders['data']:
+        
         if order['userId'] in dict:
-            value = Decimal(dict[order['userId']][1]) 
-            
-            newv = value + Decimal(order['amount'])
+            value = dict[order['userId']][1] if float(dict[order['userId']][1]) % 1 == 0 else Decimal(dict[order['userId']][1])
+            nv = Decimal(order['amount']) if float(order['amount']) % 1 != 0 else str(order['amount'])
+            newv = value +  nv
             
             #print(f'{value} + {Decimal(order["amount"])} = {newv}')
-            dict[order['userId']][1] = str(newv.normalize())
+            dict[order['userId']][1] = str(newv.normalize()) if isinstance(newv, Decimal) else str(newv)
         else:
             user = get_user_by_id_from_given_list(order['userId'], users)
-            am = str(Decimal(order['amount']).normalize())
+            am = str(Decimal(order['amount']).normalize()) if float(order['amount']) % 1 != 0 else str(order['amount']).rstrip('0')[:-1]
             #print(f'{order["amount"]} IS {am} in {order["id"]}')
-            dict[order['userId']] = [user['name'], am]
+            dict[order['userId']] = [user['name'], am, order['assetCode']]
+    
     
     return dict       
      
 def get_top_buyers_by_frequency(orders, users):
     dict = {}
     for order in orders['data']:
+        if len(dict.keys()) >= 10:
+            return dict
         if order['userId'] in dict:
             dict[order['userId']][1] +=1
         else:
