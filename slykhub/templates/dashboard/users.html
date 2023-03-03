@@ -39,16 +39,16 @@
 </table>
 </div>
 </div>
-<div class="card ">
+<div class="card" id="userscharts">
 <div class="card-header bg-primary">
 <div class = "text-center">
     <h3 class="text-white">User Growth</h3>
-                <a class="btn btn-outline-white text-white dropdown-toggle" id ="timelapsebtn" data-bs-toggle="dropdown" href="#">
+                <a class="btn btn-outline-white text-white dropdown-toggle" id ="timelapsebtn" data-bs-toggle="dropdown" href="#userscharts">
                   {{timelapses[1]}}<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                     {% for lapse in timelapses%}
-                            <li><a class="dropdown-item" href="#">{{lapse}}</a></li>
+                            <li><a class="dropdown-item" href="#userscharts">{{lapse}}</a></li>
                         {% endfor %}
                 </ul>
                 <input type="hidden" id="selected_timelapse" value="{{timelapses[1]}}" />
