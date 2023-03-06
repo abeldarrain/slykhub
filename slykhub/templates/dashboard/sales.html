@@ -13,12 +13,12 @@
         <div class="card-header bg-primary text-white text-center">
             <div class="row text-center">
             <h3>Fullfilled Orders by Date</h3>
-            <a class="btn btn-outline-white dropdown-toggle text-white" id ="timelapsebtn" data-bs-toggle="dropdown" href="#TotalOrdersInTimeChart">
+            <a class="btn btn-outline-white dropdown-toggle text-white" id ="timelapsebtn" data-bs-toggle="dropdown" href="#TotalOrdersInTimeCard">
                 {{timelapses[1]}}<span class="caret"></span>
               </a>
               <ul class="dropdown-menu" id="timelapsedropdown">
                   {% for lapse in timelapses%}
-                          <li><a class="dropdown-item" href="#">{{lapse}}</a></li>
+                          <li><a class="dropdown-item" href="#TotalOrdersInTimeCard">{{lapse}}</a></li>
                       {% endfor %}
               </ul>
               <input type="hidden" id="selected_timelapse" value="{{timelapses[1]}}" />
@@ -55,12 +55,12 @@
                 <div class="row w-100 text-center">
                 <h3>Orders by Price</h3>
                 <div class = "text-center">
-                    <a class="btn btn-outline-white dropdown-toggle text-white" id ="assetbtn" data-bs-toggle="dropdown" href="#OrdersByPriceChart">
+                    <a class="btn btn-outline-white dropdown-toggle text-white" id ="assetbtn" data-bs-toggle="dropdown" href="#OrdersByPriceCard">
                       {{assets[0]}}<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" id="assetdropdown">
                         {% for asset in assets %}
-                            <li><a class="dropdown-item" href="#">{{asset}}</a></li>
+                            <li><a class="dropdown-item" href="#OrdersByPriceCard">{{asset}}</a></li>
                         {% endfor %}
                     </ul>
                     <input type="hidden" id="selected_asset" value="{{assets[0]}}" />
