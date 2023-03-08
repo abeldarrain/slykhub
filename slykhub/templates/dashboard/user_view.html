@@ -1,0 +1,12 @@
+{% extends 'dashboard/home.html' %}
+
+{% block title %}User View{% endblock title %}
+{% block Dcss %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/dashboard/user_view.css')}}" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock Dcss %}
+
+{% block Dcontent%}
+<h1>{{username}}</h1>
+{% endblock Dcontent %}

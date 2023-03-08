@@ -47,11 +47,10 @@ def get_verified_users(apikey, url="https://api.slyk.io/users?page[size]=100&sor
             json_data = json.loads(data.read())
             return_data = json_data
             total_rows = json_data['total']
-    except error as e:
+    except Exception as e:
             print(e)
-    
-    except HTTPError as e:
             return e
+
         
         
     for i in range(int(total_rows/100)):
