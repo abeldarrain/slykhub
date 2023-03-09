@@ -10,7 +10,8 @@ from .api import(
     get_verified_users , get_enabled_tasks,  
     get_wallet_balance, get_users, get_payment_methods,
     get_completed_transactions, get_orders, get_enabled_assets,
-    get_user_by_id, get_completed_tasks_transactions, get_task_by_id
+    get_user_by_id, get_completed_tasks_transactions, get_task_by_id, get_order_details_by_id,
+    get_orders_for_user, get_product_by_id
 )
 from .postapi import complete_task
 from .util import convert
@@ -168,7 +169,6 @@ def sales():
         from .util import get_dict_orders_growth
         orders_by_date = dict(OrderedDict(sorted(orders_by_date.items())))
         
-         
         
         orders_by_date_complete = get_dict_user_growth(orders_by_date, date_list_complete)
         orders_by_date_1year = get_dict_user_growth(orders_by_date, date_list_year_ago)
@@ -650,6 +650,50 @@ def user(id):
     user_phone = user_data['phone'] if user_data['phone'] else 'Not Available'
     user_balance = get_wallet_balance(session['api_key'], wallet_id) 
     
+    ###########################################Orders & Products #################################
+    product_table_data = []
+    product_table_headers = ['Name', 'Quantity', 'Price', 'Date']
+    fulfilled_orders = get_orders_for_user(session['api_key'], id)
+    orders_by_date = {}
+    
+    for order in fulfilled_orders['data']:
+        date = order['createdAt']
+        formated_date = date[:10]
+        if orders_by_date.get(formated_date):
+            orders_by_date[formated_date] += 1  
+        else:
+            orders_by_date[formated_date] = 1
+                
+        details = get_order_details_by_id(session['api_key'],order['id'])
+        print(f'THE DETAILS: {details}')
+        product = get_product_by_id(session['api_key'],details['data'][0]['productId'])
+        product_name = product['data']['name']
+        product_quantity = details['data'][0]['quantity']
+        order_date = details['data'][0]['fulfilledAt'][:10]
+        product_price = product['data']['price']
+        product_asset = product['data']['assetCode']
+        product_table_data.append([product_name,product_quantity, (str(product_price)+' '+str(product_asset)),order_date] )
+    
+    from .util import get_dict_user_growth
+    orders_by_date = dict(OrderedDict(sorted(orders_by_date.items())))
+    today = datetime.date.today()
+    if list(orders_by_date.keys()):
+        sdate = datetime.date.fromisoformat(list(orders_by_date.keys())[0])
+    else:
+        sdate = today - relativedelta(days=1)
+    edate = today
+    date_list_complete = [sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_complete = list(map(lambda x: x.isoformat(), date_list_complete))
+    orders_by_date_complete = get_dict_user_growth(orders_by_date, date_list_complete)
+    orders_by_date_complete_dataset = [{
+                    'label': 'New orders',
+                    'data': list(orders_by_date_complete.values()),
+                    'borderWidth': 2,
+                    'spacing': 1
+                }]
+    
+    print(f'THIS IS THE TABLE DATA: {product_table_data}')
+    print(f'THIS IS THE CHART DATA: {orders_by_date_complete}')
     return render_template('dashboard/user_view.html',
                            username=username,
                             date_joined=date_joined,
@@ -658,6 +702,12 @@ def user(id):
                             user_blocked=user_blocked,
                             user_email = user_email,
                             user_phone = user_phone,
-                            user_balance = user_balance
+                            user_balance = user_balance,
+                            
+                            product_table_headers = product_table_headers,
+                            product_table_data = product_table_data,
+                            
+                            date_list_complete=date_list_complete,
+                            orders_by_date_complete_dataset=orders_by_date_complete_dataset
                             )
     
