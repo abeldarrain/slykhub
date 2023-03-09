@@ -678,7 +678,7 @@ def user(id):
     orders_by_date = dict(OrderedDict(sorted(orders_by_date.items())))
     today = datetime.date.today()
     if list(orders_by_date.keys()):
-        sdate = datetime.date.fromisoformat(list(orders_by_date.keys())[0])
+        sdate = datetime.date.fromisoformat(date_joined)
     else:
         sdate = today - relativedelta(days=1)
     edate = today
@@ -686,7 +686,7 @@ def user(id):
     date_list_complete = list(map(lambda x: x.isoformat(), date_list_complete))
     orders_by_date_complete = get_dict_user_growth(orders_by_date, date_list_complete)
     orders_by_date_complete_dataset = [{
-                    'label': 'New orders',
+                    'label': 'Purchased orders since joined',
                     'data': list(orders_by_date_complete.values()),
                     'borderWidth': 2,
                     'spacing': 1

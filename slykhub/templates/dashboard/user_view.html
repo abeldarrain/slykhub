@@ -14,6 +14,46 @@
 <p>Phone: {{user_phone}}</p>
 <p>Blocked: {% if user_blocked %}YES{%else%}NO{% endif %} </p>
 <p>Balance: {%for data in user_balance['data']%}{{data['assetCode']}}: {{ data['amount']}}</br>{% endfor %}</p>
+
+            <h3 class='text-center'>Orders &#38; Products</h3>
+            <table class="table" id="ProductTable">
+                <thead>
+                  <tr>
+                    {% for header in  product_table_headers%}
+                        <th>{{header}}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in  product_table_data%}
+                    <tr>
+                    {% for cell in  row %}
+                    <td>{{cell}}</td>
+                    {% endfor %}
+                    </tr>
+                  {% endfor %}  
+                </tbody>
+              </table>
+              <canvas id="OrdersInTimeChart" class="chart-container"></canvas>
+              <script>
+                  const OBD = document.getElementById('OrdersInTimeChart');
+  
+                  var OBDchart = new Chart(OBD, {
+                      type: 'bar',
+                      data: {
+                      labels: {{date_list_complete |tojson}},
+                      datasets: {{orders_by_date_complete_dataset | tojson}}
+                      },
+                      options: {
+                              responsive:true,
+                              scales: {
+                                  y: {
+                                    beginAtZero: true
+                                  }
+                              }
+                      }
+                  });
+              </script>
 <h3 class='text-center'>Completed Tasks</h3>
 <table class="table" id="completedTasksTable">
     <thead>
