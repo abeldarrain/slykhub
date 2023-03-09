@@ -14,7 +14,7 @@ canvas{
 
 
 .clickable-row:hover{
-    background-color: lightblue;
+    background-color: lightcyan;
     cursor: pointer;
 }
 .clickable-row:hover *{

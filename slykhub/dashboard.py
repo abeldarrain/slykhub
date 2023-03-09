@@ -9,7 +9,8 @@ from urllib.error import HTTPError
 from .api import(
     get_verified_users , get_enabled_tasks,  
     get_wallet_balance, get_users, get_payment_methods,
-    get_completed_transactions, get_orders, get_enabled_assets
+    get_completed_transactions, get_orders, get_enabled_assets,
+    get_user_by_id, get_completed_tasks_transactions, get_task_by_id
 )
 from .postapi import complete_task
 from .util import convert
@@ -350,7 +351,7 @@ def users():
     else:
         for user in users['data']:
             if 'user' in user['roles']:
-                (username, email) = (user['name'], user['email'])
+                (username, email, ids) = (user['name'], user['email'], user['id'])
                 ######################### With Balance ################# 
                 wallet = user['primaryWalletId']
                 #balancedata = get_wallet_balance(session['api_key'], wallet)
@@ -362,7 +363,7 @@ def users():
                         balance = balancedata['data']
                     else:
                         balance = [{'assetCode': 'balance', 'amount': 'empty'}]
-                    user_table_rows.append((username, email, balance))
+                    user_table_rows.append((username, email, ids, balance))
                 ######################### Without Balance #################
                 #rows.append((username, email, ids))
                 ######################### END #################
@@ -622,12 +623,40 @@ def users():
     
     
 @bp.route('/users/<username>')
-@login_required   
+@login_required
 def user(username):
+    id = request.args.get('id', None)
+    user_data = get_user_by_id(session['api_key'],id)['data']
     
+    
+    ###############################Completed tasks #############################
+    tasks_table_headers = ['Task', 'Amount', 'Date completed']
+    completed_tasks_overall = get_completed_tasks_transactions(session['api_key'])
+    wallet_id = user_data['primaryWalletId']
+    tasks_completed_by_user = []
+    
+    for cto in completed_tasks_overall['data']:
+        if cto['destinationWalletId']==wallet_id:
+            task_date = str(cto['processedAt'])[:10]
+            task = get_task_by_id(session['api_key'], cto['taskId'])
+            task_name = task['data']['name'] 
+            task_amount = task['data']['amount']
+            tasks_completed_by_user.append([task_name,task_amount, task_date])
+    ###################################Blocked, balance, email, date joined #################################
+    user_blocked = user_data['blocked']
+    date_joined = user_data['createdAt'][:10]  
+    user_email = user_data['email']
+    user_phone = user_data['phone'] if user_data['phone'] else 'Not Available'
+    user_balance = get_wallet_balance(session['api_key'], wallet_id) 
     
     return render_template('dashboard/user_view.html',
-                           username=username
-                            
+                           username=username,
+                            date_joined=date_joined,
+                            tasks_table_headers = tasks_table_headers,
+                            tasks_completed_by_user = tasks_completed_by_user,
+                            user_blocked=user_blocked,
+                            user_email = user_email,
+                            user_phone = user_phone,
+                            user_balance = user_balance
                             )
     

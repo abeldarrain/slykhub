@@ -9,4 +9,28 @@
 
 {% block Dcontent%}
 <h1>{{username}}</h1>
+<p>Date joined: {{date_joined}}</p>
+<p>Email: {{user_email}}</p>
+<p>Phone: {{user_phone}}</p>
+<p>Blocked: {% if user_blocked %}YES{%else%}NO{% endif %} </p>
+<p>Balance: {%for data in user_balance['data']%}{{data['assetCode']}}: {{ data['amount']}}</br>{% endfor %}</p>
+<h3 class='text-center'>Completed Tasks</h3>
+<table class="table" id="completedTasksTable">
+    <thead>
+      <tr>
+        {% for header in  tasks_table_headers%}
+            <th>{{header}}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in  tasks_completed_by_user%}
+        <tr>
+        {% for cell in  row %}
+        <td>{{cell}}</td>
+        {% endfor %}
+        </tr>
+      {% endfor %}  
+    </tbody>
+  </table>
 {% endblock Dcontent %}
