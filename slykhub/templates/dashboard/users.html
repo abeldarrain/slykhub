@@ -27,7 +27,7 @@
   </thead>
   <tbody>
     {% for row in  user_table_rows%}
-    <tr class='clickable-row' data-href="{{url_for('dashboard.user' ,username=row[0], id=row[-2])}}">
+    <tr class='clickable-row' data-href="{{url_for('dashboard.user' ,id=row[-2])}}">
       {% for cell in  row[:-2]%}
       <td>{{cell}}</td>
       {% endfor %}

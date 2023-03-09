@@ -622,27 +622,28 @@ def users():
                            )
     
     
-@bp.route('/users/<username>')
+@bp.route('/users/<id>')
 @login_required
-def user(username):
-    id = request.args.get('id', None)
+def user(id):
     user_data = get_user_by_id(session['api_key'],id)['data']
+
     
     
     ###############################Completed tasks #############################
     tasks_table_headers = ['Task', 'Amount', 'Date completed']
-    completed_tasks_overall = get_completed_tasks_transactions(session['api_key'])
     wallet_id = user_data['primaryWalletId']
+    completed_tasks_overall = get_completed_tasks_transactions(session['api_key'], wallet_id)
+    
     tasks_completed_by_user = []
     
     for cto in completed_tasks_overall['data']:
-        if cto['destinationWalletId']==wallet_id:
-            task_date = str(cto['processedAt'])[:10]
-            task = get_task_by_id(session['api_key'], cto['taskId'])
-            task_name = task['data']['name'] 
-            task_amount = task['data']['amount']
-            tasks_completed_by_user.append([task_name,task_amount, task_date])
-    ###################################Blocked, balance, email, date joined #################################
+        task_date = str(cto['processedAt'])[:10]
+        task = get_task_by_id(session['api_key'], cto['taskId'])
+        task_name = task['data']['name'] 
+        task_amount = task['data']['amount']
+        tasks_completed_by_user.append([task_name,task_amount, task_date])
+    ###################################username, Blocked, balance, email, date joined #################################
+    username = user_data['name']
     user_blocked = user_data['blocked']
     date_joined = user_data['createdAt'][:10]  
     user_email = user_data['email']

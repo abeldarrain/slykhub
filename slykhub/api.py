@@ -310,10 +310,13 @@ def get_user_by_id(apikey, id, url="https://api.slyk.io/users"):
         
         return return_data
 
-def get_completed_tasks_transactions(apikey, url="https://api.slyk.io/transactions?filter[status]=completed&filter[code]=internal:earn:task"):
+def get_completed_tasks_transactions(apikey, wallet_id, url="https://api.slyk.io/transactions?filter[status]=completed&filter[code]=internal:earn:task"):
         return_data = {}
+        finalurl = url +'&filter[destinationWalletId]=' + str(wallet_id)
+        
+        print(f'this is the final url for tasks:{finalurl}')
         try:
-                req = request.Request(url, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
                 data = request.urlopen(req, timeout = 100)
                 json_data = json.loads(data.read())
                 return_data = json_data
