@@ -9,7 +9,25 @@
 
 {% block Dcontent%}
 <h1>{{username}}</h1>
-<p>Date joined: {{date_joined}}</p>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">Info</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="false">Products</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">Activity</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tasks-tab" data-bs-toggle="tab" data-bs-target="#tasks" type="button" role="tab" aria-controls="tasks" aria-selected="false">Tasks</button>
+      </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <!--#######################################INFO####################################-->
+    <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+        <p>Date joined: {{date_joined}}</p>
 <p>Email: {{user_email}}</p>
 <p>Phone: {{user_phone}}</p>
 <p>Balance: {%for data in user_balance['data']%}{{data['assetCode']}}: {{ data['amount']}}</br>{% endfor %}</p>
@@ -23,10 +41,10 @@
     {%endif%}
 </div>
 </form>
-
-
-
-<h3 class='text-center'>Orders &#38; Products</h3>
+    </div>
+    <!--#######################################PRODUCTS####################################-->
+    <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+<h3 class='text-center'> Products</h3>
 <table class="table" id="ProductTable">
     <thead>
         <tr>
@@ -46,32 +64,31 @@
     </tbody>
     </table>
 
-
-
-    <canvas id="OrdersInTimeChart" class="chart-container"></canvas>
-    <script>
-        const OBD = document.getElementById('OrdersInTimeChart');
-
-        var OBDchart = new Chart(OBD, {
-            type: 'bar',
-            data: {
-            labels: {{date_list_complete |tojson}},
-            datasets: {{orders_by_date_complete_dataset | tojson}}
-            },
-            options: {
-                    responsive:true,
-                    scales: {
-                        y: {
-                        beginAtZero: true
+    </div>
+    <!--#######################################ORDERS####################################-->
+    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab"><canvas id="OrdersInTimeChart" class="chart-container"></canvas>
+        <script>
+            const OBD = document.getElementById('OrdersInTimeChart');
+    
+            var OBDchart = new Chart(OBD, {
+                type: 'bar',
+                data: {
+                labels: {{date_list_complete |tojson}},
+                datasets: {{orders_by_date_complete_dataset | tojson}}
+                },
+                options: {
+                        responsive:true,
+                        scales: {
+                            y: {
+                            beginAtZero: true
+                            }
                         }
-                    }
-            }
-        });
-    </script>
-
-
-
-    <h3 class='text-center'>Completed Tasks</h3>
+                }
+            });
+        </script></div>
+    <!--#######################################TASKS####################################-->
+    <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+        <h3 class='text-center'>Completed Tasks</h3>
     <table class="table" id="completedTasksTable">
         <thead>
         <tr>
@@ -90,6 +107,13 @@
         {% endfor %}  
         </tbody>
     </table>
+    </div>
+  </div>
+
+
+
+
+    
 
     <script>
     $(document).ready(function (){
