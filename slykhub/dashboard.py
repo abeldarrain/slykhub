@@ -622,16 +622,30 @@ def users():
                            )
     
     
-@bp.route('/users/<id>')
+@bp.route('/users/<id>', methods=['GET', 'POST'])
 @login_required
 def user(id):
     user_data = get_user_by_id(session['api_key'],id)['data']
-
+    wallet_id = user_data['primaryWalletId']
+        
+    ###################################username, Blocked, balance, email, date joined #################################
+    from .postapi import block_user, unblock_user
+    username = user_data['name']
+    if request.method == 'POST':
+        user_blocked = user_data['blocked']
+        print(f'THIS IS A POST REQUEST AND THE USER STATUS IS {user_blocked}')
+        unblock_user(session['api_key'],id) if user_blocked else block_user(session['api_key'],id)
+        user_data = get_user_by_id(session['api_key'],id)['data']
+    user_blocked = user_data['blocked']
+    date_joined = user_data['createdAt'][:10]  
+    user_email = user_data['email']
+    user_phone = user_data['phone'] if user_data['phone'] else 'Not Available'
+    user_balance = get_wallet_balance(session['api_key'], wallet_id) 
     
     
     ###############################Completed tasks #############################
     tasks_table_headers = ['Task', 'Amount', 'Date completed']
-    wallet_id = user_data['primaryWalletId']
+    
     completed_tasks_overall = get_completed_tasks_transactions(session['api_key'], wallet_id)
     
     tasks_completed_by_user = []
@@ -642,13 +656,7 @@ def user(id):
         task_name = task['data']['name'] 
         task_amount = task['data']['amount']
         tasks_completed_by_user.append([task_name,task_amount, task_date])
-    ###################################username, Blocked, balance, email, date joined #################################
-    username = user_data['name']
-    user_blocked = user_data['blocked']
-    date_joined = user_data['createdAt'][:10]  
-    user_email = user_data['email']
-    user_phone = user_data['phone'] if user_data['phone'] else 'Not Available'
-    user_balance = get_wallet_balance(session['api_key'], wallet_id) 
+    
     
     ###########################################Orders & Products #################################
     product_table_data = []
@@ -677,10 +685,7 @@ def user(id):
     from .util import get_dict_user_growth
     orders_by_date = dict(OrderedDict(sorted(orders_by_date.items())))
     today = datetime.date.today()
-    if list(orders_by_date.keys()):
-        sdate = datetime.date.fromisoformat(date_joined)
-    else:
-        sdate = today - relativedelta(days=1)
+    sdate = datetime.date.fromisoformat(date_joined)
     edate = today
     date_list_complete = [sdate+timedelta(days=x) for x in range((edate-sdate).days)]
     date_list_complete = list(map(lambda x: x.isoformat(), date_list_complete))

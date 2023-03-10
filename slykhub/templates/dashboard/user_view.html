@@ -12,65 +12,89 @@
 <p>Date joined: {{date_joined}}</p>
 <p>Email: {{user_email}}</p>
 <p>Phone: {{user_phone}}</p>
-<p>Blocked: {% if user_blocked %}YES{%else%}NO{% endif %} </p>
 <p>Balance: {%for data in user_balance['data']%}{{data['assetCode']}}: {{ data['amount']}}</br>{% endfor %}</p>
+<p>Blocked: {% if user_blocked %}YES{%else%}NO{% endif %} </p>
+<form method="post">
+<div class=" w-100 text-center">
+    {% if user_blocked%}
+    <button class="btn btn-lg btn-danger text-center" type="submit">Unblock User</button>
+    {%else%}
+    <button class="btn btn-lg btn-danger text-center" type="submit">Block User</button>
+    {%endif%}
+</div>
+</form>
 
-            <h3 class='text-center'>Orders &#38; Products</h3>
-            <table class="table" id="ProductTable">
-                <thead>
-                  <tr>
-                    {% for header in  product_table_headers%}
-                        <th>{{header}}</th>
-                    {% endfor %}
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for row in  product_table_data%}
-                    <tr>
-                    {% for cell in  row %}
-                    <td>{{cell}}</td>
-                    {% endfor %}
-                    </tr>
-                  {% endfor %}  
-                </tbody>
-              </table>
-              <canvas id="OrdersInTimeChart" class="chart-container"></canvas>
-              <script>
-                  const OBD = document.getElementById('OrdersInTimeChart');
-  
-                  var OBDchart = new Chart(OBD, {
-                      type: 'bar',
-                      data: {
-                      labels: {{date_list_complete |tojson}},
-                      datasets: {{orders_by_date_complete_dataset | tojson}}
-                      },
-                      options: {
-                              responsive:true,
-                              scales: {
-                                  y: {
-                                    beginAtZero: true
-                                  }
-                              }
-                      }
-                  });
-              </script>
-<h3 class='text-center'>Completed Tasks</h3>
-<table class="table" id="completedTasksTable">
+
+
+<h3 class='text-center'>Orders &#38; Products</h3>
+<table class="table" id="ProductTable">
     <thead>
-      <tr>
-        {% for header in  tasks_table_headers%}
+        <tr>
+        {% for header in  product_table_headers%}
             <th>{{header}}</th>
         {% endfor %}
-      </tr>
+        </tr>
     </thead>
     <tbody>
-      {% for row in  tasks_completed_by_user%}
+        {% for row in  product_table_data%}
         <tr>
         {% for cell in  row %}
         <td>{{cell}}</td>
         {% endfor %}
         </tr>
-      {% endfor %}  
+        {% endfor %}  
     </tbody>
-  </table>
+    </table>
+
+
+
+    <canvas id="OrdersInTimeChart" class="chart-container"></canvas>
+    <script>
+        const OBD = document.getElementById('OrdersInTimeChart');
+
+        var OBDchart = new Chart(OBD, {
+            type: 'bar',
+            data: {
+            labels: {{date_list_complete |tojson}},
+            datasets: {{orders_by_date_complete_dataset | tojson}}
+            },
+            options: {
+                    responsive:true,
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
+                    }
+            }
+        });
+    </script>
+
+
+
+    <h3 class='text-center'>Completed Tasks</h3>
+    <table class="table" id="completedTasksTable">
+        <thead>
+        <tr>
+            {% for header in  tasks_table_headers%}
+                <th>{{header}}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in  tasks_completed_by_user%}
+            <tr>
+            {% for cell in  row %}
+            <td>{{cell}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}  
+        </tbody>
+    </table>
+
+    <script>
+    $(document).ready(function (){
+        $('#ProductTable').DataTable();
+        $('#completedTasksTable').DataTable();
+    });
+    </script>
 {% endblock Dcontent %}
