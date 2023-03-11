@@ -62,6 +62,11 @@ function downloadCSVFile(csv_data) {
     document.body.removeChild(temp_link);
 }
 
-$('#btnExport').click(tableToCSV);
 
+$('#usertable tbody').on('click', '.clickable-row', function() {
+    var row = $(this).closest('tr');
+    window.location = $(row).data("href");
+});
+
+$('#btnExport').click(tableToCSV);
 });

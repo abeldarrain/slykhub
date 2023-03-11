@@ -12,3 +12,12 @@ canvas{
     margin: 10px;
 } 
 
+
+.clickable-row:hover{
+    background-color: lightcyan;
+    cursor: pointer;
+}
+.clickable-row:hover *{
+    padding: 15px;
+}
+

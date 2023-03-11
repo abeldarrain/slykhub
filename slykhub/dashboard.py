@@ -9,7 +9,9 @@ from urllib.error import HTTPError
 from .api import(
     get_verified_users , get_enabled_tasks,  
     get_wallet_balance, get_users, get_payment_methods,
-    get_completed_transactions, get_orders, get_enabled_assets
+    get_completed_transactions, get_orders, get_enabled_assets,
+    get_user_by_id, get_completed_tasks_transactions, get_task_by_id, get_order_details_by_id,
+    get_orders_for_user, get_product_by_id
 )
 from .postapi import complete_task
 from .util import convert
@@ -167,7 +169,6 @@ def sales():
         from .util import get_dict_orders_growth
         orders_by_date = dict(OrderedDict(sorted(orders_by_date.items())))
         
-         
         
         orders_by_date_complete = get_dict_user_growth(orders_by_date, date_list_complete)
         orders_by_date_1year = get_dict_user_growth(orders_by_date, date_list_year_ago)
@@ -350,7 +351,7 @@ def users():
     else:
         for user in users['data']:
             if 'user' in user['roles']:
-                (username, email) = (user['name'], user['email'])
+                (username, email, ids) = (user['name'], user['email'], user['id'])
                 ######################### With Balance ################# 
                 wallet = user['primaryWalletId']
                 balancedata = get_wallet_balance(session['api_key'], wallet)
@@ -362,7 +363,7 @@ def users():
                         balance = balancedata['data']
                     else:
                         balance = [{'assetCode': 'balance', 'amount': 'empty'}]
-                    user_table_rows.append((username, email, balance))
+                    user_table_rows.append((username, email, ids, balance))
                 ######################### Without Balance #################
                 #rows.append((username, email, ids))
                 ######################### END #################
@@ -621,5 +622,97 @@ def users():
                            )
     
     
+@bp.route('/users/<id>', methods=['GET', 'POST'])
+@login_required
+def user(id):
+    user_data = get_user_by_id(session['api_key'],id)['data']
+    wallet_id = user_data['primaryWalletId']
+        
+    ###################################username, Blocked, balance, email, date joined #################################
+    from .postapi import block_user, unblock_user
+    username = user_data['name']
+    if request.method == 'POST':
+        user_blocked = user_data['blocked']
+        print(f'THIS IS A POST REQUEST AND THE USER STATUS IS {user_blocked}')
+        unblock_user(session['api_key'],id) if user_blocked else block_user(session['api_key'],id)
+        user_data = get_user_by_id(session['api_key'],id)['data']
+    user_blocked = user_data['blocked']
+    date_joined = user_data['createdAt'][:10]  
+    user_email = user_data['email']
+    user_phone = user_data['phone'] if user_data['phone'] else 'Not Available'
+    user_balance = get_wallet_balance(session['api_key'], wallet_id) 
     
+    
+    ###############################Completed tasks #############################
+    tasks_table_headers = ['Task', 'Amount', 'Date completed']
+    
+    completed_tasks_overall = get_completed_tasks_transactions(session['api_key'], wallet_id)
+    
+    tasks_completed_by_user = []
+    
+    for cto in completed_tasks_overall['data']:
+        task_date = str(cto['processedAt'])[:10]
+        task = get_task_by_id(session['api_key'], cto['taskId'])
+        task_name = task['data']['name'] 
+        task_amount = task['data']['amount']
+        tasks_completed_by_user.append([task_name,task_amount, task_date])
+    
+    
+    ###########################################Orders & Products #################################
+    product_table_data = []
+    product_table_headers = ['Name', 'Quantity', 'Price', 'Date']
+    fulfilled_orders = get_orders_for_user(session['api_key'], id)
+    orders_by_date = {}
+    
+    for order in fulfilled_orders['data']:
+        date = order['createdAt']
+        formated_date = date[:10]
+        if orders_by_date.get(formated_date):
+            orders_by_date[formated_date] += 1  
+        else:
+            orders_by_date[formated_date] = 1
+                
+        details = get_order_details_by_id(session['api_key'],order['id'])
+        print(f'THE DETAILS: {details}')
+        product = get_product_by_id(session['api_key'],details['data'][0]['productId'])
+        product_name = product['data']['name']
+        product_quantity = details['data'][0]['quantity']
+        order_date = details['data'][0]['fulfilledAt'][:10]
+        product_price = product['data']['price']
+        product_asset = product['data']['assetCode']
+        product_table_data.append([product_name,product_quantity, (str(product_price)+' '+str(product_asset)),order_date] )
+    
+    from .util import get_dict_user_growth
+    orders_by_date = dict(OrderedDict(sorted(orders_by_date.items())))
+    today = datetime.date.today()
+    sdate = datetime.date.fromisoformat(date_joined)
+    edate = today
+    date_list_complete = [sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+    date_list_complete = list(map(lambda x: x.isoformat(), date_list_complete))
+    orders_by_date_complete = get_dict_user_growth(orders_by_date, date_list_complete)
+    orders_by_date_complete_dataset = [{
+                    'label': 'Purchased orders since joined',
+                    'data': list(orders_by_date_complete.values()),
+                    'borderWidth': 2,
+                    'spacing': 1
+                }]
+    
+    print(f'THIS IS THE TABLE DATA: {product_table_data}')
+    print(f'THIS IS THE CHART DATA: {orders_by_date_complete}')
+    return render_template('dashboard/user_view.html',
+                           username=username,
+                            date_joined=date_joined,
+                            tasks_table_headers = tasks_table_headers,
+                            tasks_completed_by_user = tasks_completed_by_user,
+                            user_blocked=user_blocked,
+                            user_email = user_email,
+                            user_phone = user_phone,
+                            user_balance = user_balance,
+                            
+                            product_table_headers = product_table_headers,
+                            product_table_data = product_table_data,
+                            
+                            date_list_complete=date_list_complete,
+                            orders_by_date_complete_dataset=orders_by_date_complete_dataset
+                            )
     

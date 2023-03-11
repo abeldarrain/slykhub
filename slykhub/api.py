@@ -47,11 +47,10 @@ def get_verified_users(apikey, url="https://api.slyk.io/users?page[size]=100&sor
             json_data = json.loads(data.read())
             return_data = json_data
             total_rows = json_data['total']
-    except error as e:
+    except Exception as e:
             print(e)
-    
-    except HTTPError as e:
             return e
+
         
         
     for i in range(int(total_rows/100)):
@@ -311,9 +310,114 @@ def get_user_by_id(apikey, id, url="https://api.slyk.io/users"):
         
         return return_data
 
+def get_completed_tasks_transactions(apikey, wallet_id, url="https://api.slyk.io/transactions?filter[status]=completed&filter[code]=internal:earn:task"):
+        return_data = {}
+        finalurl = url +'&filter[destinationWalletId]=' + str(wallet_id)
+        
+        print(f'this is the final url for tasks:{finalurl}')
+        try:
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+                total_rows = json_data['total']
+        except HTTPError as e:
+                print(e)
+                return e
+        except Exception as e:
+                return e
+        
+        
+        for i in range(int(total_rows/100)):
+                try:
+                        req = request.Request(url+"&page[number]="+str(i+2), headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                        data = request.urlopen(req, timeout = 100)
+                        json_data = json.loads(data.read())
+                        return_data['data'].extend(json_data['data'])
+                        print(url+"&page[size]="+str(i+2))
+                        print(len(return_data['data']))
+                except error as e:
+                        print(e)
+                except HTTPError as e:
+                        return e
+        return return_data
 
+def get_task_by_id(apikey, id, url="https://api.slyk.io/tasks"):
+        return_data = {}
+        finalurl = url +'/'+ str(id)
+        try:
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+        except HTTPError as e:
+                print(e)
+                return e
+        except Exception as e:
+                return e
+        return return_data
 
+def get_order_details_by_id(apikey, order_id, url="https://api.slyk.io/orders"):
+        return_data = {}
+        finalurl = url +'/'+ str(order_id) +'/lines'
+        try:
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+        except HTTPError as e:
+                print(e)
+                return e
+        except Exception as e:
+                return e
+        return return_data
 
+def get_orders_for_user(apikey, user_id, url="https://api.slyk.io/orders?filter[orderStatus]=fulfilled&sorted=createdAt"):
+        return_data = {}
+        finalurl = url +'&filter[userId]=' + str(user_id)
+        
+        print(f'this is the final url for orders:{finalurl}')
+        try:
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+                total_rows = json_data['total']
+        except HTTPError as e:
+                print(e)
+                return e
+        except Exception as e:
+                return e
+        
+        
+        for i in range(int(total_rows/100)):
+                try:
+                        req = request.Request(url+"&page[number]="+str(i+2), headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                        data = request.urlopen(req, timeout = 100)
+                        json_data = json.loads(data.read())
+                        return_data['data'].extend(json_data['data'])
+                        print(url+"&page[size]="+str(i+2))
+                        print(len(return_data['data']))
+                except error as e:
+                        print(e)
+                except HTTPError as e:
+                        return e
+        return return_data
+
+def get_product_by_id(apikey, product_id, url="https://api.slyk.io/products"):
+        return_data = {}
+        finalurl = url +'/'+ str(product_id) 
+        try:
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+        except HTTPError as e:
+                print(e)
+                return e
+        except Exception as e:
+                return e
+        return return_data
 
 def create_user(apikey, userdata):
         print(userdata)
@@ -322,7 +426,8 @@ def create_user(apikey, userdata):
                 resp = request.urlopen(req)
         except HTTPError as e:
                 print(e.reason)
-                
+ 
+              
                 
 
                 

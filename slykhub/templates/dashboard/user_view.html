@@ -1,0 +1,141 @@
+{% extends 'dashboard/home.html' %}
+
+{% block title %}User View{% endblock title %}
+{% block Dcss %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/dashboard/user_view.css')}}" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock Dcss %}
+
+{% block Dcontent%}
+<h1>{{username}}</h1>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">Info</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="false">Products</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">Activity</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tasks-tab" data-bs-toggle="tab" data-bs-target="#tasks" type="button" role="tab" aria-controls="tasks" aria-selected="false">Tasks</button>
+      </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <!--#######################################INFO####################################-->
+    <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+        <div>
+        <p>Date joined: {{date_joined}}</p>
+        <p>Email: {{user_email}}</p>
+        <p>Phone: {{user_phone}}</p>
+        <p>Balance: {%for data in user_balance['data']%}{{data['assetCode']}}: {{ data['amount']}}</br>{% endfor %}</p>
+        <p>Blocked: {% if user_blocked %}YES{%else%}NO{% endif %} </p>
+        <form method="post">
+        <div>
+            {% if user_blocked%}
+        <button class="btn btn-lg btn-sm btn-danger text-center" type="submit">Unblock User</button>
+        {%else%}
+        <button class="btn btn-lg btn-sm btn-danger text-center" type="submit">Block User</button>
+        {%endif%}
+        </div>
+        </form>
+        </div>
+    </div>
+    <!--#######################################PRODUCTS####################################-->
+    <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+        <div class="card">
+        <div class="card-header bg-primary text-white">
+    <h3 class='text-center'> Purchases</h3>
+        </div>
+        <div class="card-body">
+    <table class="table" id="ProductTable">
+    <thead>
+        <tr>
+        {% for header in  product_table_headers%}
+            <th>{{header}}</th>
+        {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in  product_table_data%}
+        <tr>
+        {% for cell in  row %}
+        <td>{{cell}}</td>
+        {% endfor %}
+        </tr>
+        {% endfor %}  
+    </tbody>
+    </table>
+</div>
+</div>
+    </div>
+    <!--#######################################ORDERS####################################-->
+    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+        <div class="chart-container">
+        <canvas id="OrdersInTimeChart" class="chart-container"></canvas>
+        </div>
+        <script>
+            const OBD = document.getElementById('OrdersInTimeChart');
+    
+            var OBDchart = new Chart(OBD, {
+                type: 'bar',
+                data: {
+                labels: {{date_list_complete |tojson}},
+                datasets: {{orders_by_date_complete_dataset | tojson}}
+                },
+                options: {
+                        responsive:true,
+                        scales: {
+                            y: {
+                            beginAtZero: true
+                            }
+                        }
+                }
+            });
+        </script>
+    </div>
+    <!--#######################################TASKS####################################-->
+    <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+        <div class="card">
+        <div class="card-header bg-primary text-white">
+        <h3 class='text-center'>Completed Tasks</h3>
+        </div>
+        <div class="card-body">
+    <table class="table" id="completedTasksTable">
+        <thead>
+        <tr>
+            {% for header in  tasks_table_headers%}
+                <th>{{header}}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in  tasks_completed_by_user%}
+            <tr>
+            {% for cell in  row %}
+            <td>{{cell}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}  
+        </tbody>
+    </table>
+</div>
+</div>
+    </div>
+  </div>
+
+
+
+
+    
+
+    <script>
+    $(document).ready(function (){
+        $('#ProductTable').DataTable();
+        $('#completedTasksTable').DataTable();
+    });
+    </script>
+{% endblock Dcontent %}

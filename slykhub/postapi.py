@@ -25,3 +25,39 @@ def complete_task(task, user_ids, apikey, url="https://api.slyk.io/tasks/"):
                                 return e
                 print(f'{ia} loop, task completed for {user_id}, 422 error: {err422}')
         return err422  
+
+def block_user(apikey, id, url="https://api.slyk.io/users"):
+        
+        return_data = {}
+        finalurl = url +'/'+ str(id) +'/block'
+        try:
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey}, method='POST')
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+                print(f'USER {id} BLOCKED IN URL {finalurl}')
+        except HTTPError as e:
+                print(e)
+                return e
+        except Exception as e:
+                return e
+        
+        
+        return return_data
+
+def unblock_user(apikey, id, url="https://api.slyk.io/users"):
+        return_data = {}
+        finalurl = url +'/'+ str(id) +'/unblock'
+        try:
+                req = request.Request(finalurl, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey}, method='POST')
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+                print(f'USER {id} UNBLOCKED IN URL {finalurl}')
+        except HTTPError as e:
+                print(e)
+                return e
+        except Exception as e:
+                return e
+       
+        return return_data
