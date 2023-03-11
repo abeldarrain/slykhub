@@ -1,0 +1,16 @@
+.tab-pane{
+    padding: 20px;
+    border: 1px solid;
+    border-bottom-color: rgb(222, 226, 230);
+    border-right-color: rgb(222, 226, 230);
+    border-top-color: rgb(255, 255, 255);
+    border-left-color: rgb(222, 226, 230);
+}
+
+.chart-container{
+    height: auto;
+    width: auto;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}

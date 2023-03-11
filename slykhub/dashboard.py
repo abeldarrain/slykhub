@@ -354,8 +354,8 @@ def users():
                 (username, email, ids) = (user['name'], user['email'], user['id'])
                 ######################### With Balance ################# 
                 wallet = user['primaryWalletId']
-                #balancedata = get_wallet_balance(session['api_key'], wallet)
-                balancedata = {'data': [{'assetCode': 'btc', 'amount': 0.02}, {'assetCode': 'qva', 'amount': 200}]}
+                balancedata = get_wallet_balance(session['api_key'], wallet)
+                #balancedata = {'data': [{'assetCode': 'btc', 'amount': 0.02}, {'assetCode': 'qva', 'amount': 200}]}
                 if balancedata is HTTPError:
                     error = balancedata
                 else:  
