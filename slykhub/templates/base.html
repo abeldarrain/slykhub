@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Slykhub - {% block title %}{% endblock title %}</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
        <!-- <link href="{{url_for('static', filename = 'css/bootstrap.css')}}" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
        -->
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -19,7 +19,7 @@
         <link href="{{url_for('static', filename='css/bootstrap.min.css.map')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/base.css')}}" rel="stylesheet">
        <link rel="shortcut icon" href="{{url_for('static', filename='img/slykhublogo.svg')}}" type="image/x-icon">
-
+       <meta name="viewport" content="width=900, initial-scale=1, shrink-to-fit=no">
     </head>
     </head>
     <body>
@@ -39,7 +39,7 @@
         </div>
       </div>
     </nav>-->
-    <nav class="navbar navbar-primary bg-primary fixed-top">
+    <nav class="navbar bg-primary navbar-primary navbar-fixed-top">
       <div class="container-fluid">
         <a
           class="navbar-brand me-auto ms-lg-0 ms-3 text-uppercase fw-bold"
@@ -91,9 +91,9 @@
         {% block content%}
         
         {% endblock content %}
-        
+       
           <footer>
-            <div class="flex-column flex-sm-row justify-content-between py-4 my-4 border-top fixed-bot text-center">
+            <div class="flex-column container flex-sm-row justify-content-between py-4 my-4 border-top fixed-bot text-center">
                 <p>&copy; Powered by <a href='https://Slyk.io'>Slyk.io</a>.</p>
             </div>
         </footer>

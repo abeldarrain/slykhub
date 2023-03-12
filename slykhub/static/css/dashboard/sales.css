@@ -16,12 +16,16 @@
     align-self: right;
     height: 400px;
     width: 300px;
+    min-height: 400px !important;
+    min-width: 300px !important;
     align-items: center;
 }
 
 #OrdersByPriceCard{
     height: 420px;
     width: 650px;
+    min-height: 420px !important;
+    min-width: 650px !important;
     align-items: center;
 }
 #OrdersByPriceCardBody{

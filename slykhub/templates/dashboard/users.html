@@ -9,15 +9,15 @@
 {% endblock Dcss %}
 
 {% block Dcontent%}
-    <div class="card">
-    <div class="card-header bg-primary">
-   <h3 class="text-center text-white">Slyk Users</h3>
+    <div class="card container">
+    <div class="card-header bg-primary container">
+   <h3 class="text-center text-white container">Slyk Users</h3>
 </div>
-<div class="card-body">   
-    <div class=" w-100 text-end">
+<div class="card-body container">   
+    <div class=" w-100 text-end container">
         <button class="btn btn-lg btn-primary text-center" id="btnExport">Export to csv</button>
     </div>
-<table class="table" id="usertable">
+<table class="table container" id="usertable">
   <thead>
     <tr>
       {% for header in  user_table_headers%}
@@ -39,8 +39,8 @@
 </table>
 </div>
 </div>
-<div class="card" id="userscharts">
-<div class="card-header bg-primary">
+<div class="card container" id="userscharts">
+<div class="card-header container bg-primary">
 <div class = "text-center">
     <h3 class="text-white">User Growth</h3>
                 <a class="btn btn-outline-white text-white dropdown-toggle" id ="timelapsebtn" data-bs-toggle="dropdown" href="#userscharts">
@@ -54,16 +54,16 @@
                 <input type="hidden" id="selected_timelapse" value="{{timelapses[1]}}" />
             </div>
         </div>
-        <div class="card-body">  
+        <div class="card-body container">  
 <div class="row py-2">
-    <div class="card"  id="NewUsersInTimeCard">
+    <div class="card container"  id="NewUsersInTimeCard">
         <div class="card-header bg-primary text-white">
-            <div class="row w-100 text-center">
+            <div class="row w-100 text-center container">
             <h3>New Slyk users</h3>
             </div>
         </div>
 
-        <div class="card-body" id="NewUsersInTime">
+        <div class="card-body container" id="NewUsersInTime">
             
             <canvas id="NewUsersInTimeChart" class="chart-container"></canvas>
             <script>
@@ -87,14 +87,14 @@
             </script>
         </div>
     </div>
-    <div class="card"  id="TotalUsersInTimeCard">
+    <div class="card container"  id="TotalUsersInTimeCard">
         <div class="card-header bg-primary text-white">
-            <div class="row w-100 text-center">
+            <div class="row w-100 text-center container">
             <h3>Total Slyk users</h3>
             </div>
         </div>
 
-        <div class="card-body" id="TotalUsersInTime">
+        <div class="card-body container" id="TotalUsersInTime">
             
             <canvas id="TotalUsersInTimeChart" class="chart-container"></canvas>
             <script>
