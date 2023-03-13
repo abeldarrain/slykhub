@@ -1,8 +1,12 @@
 html,
 body {
   width: 100%;
-  padding-top: 0px;
   height: 100%;
+  padding: 0px;
+} 
+#main-container{
+    padding-left: 0px;
+    padding-right: 0px
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
@@ -18,7 +22,7 @@ body {
     margin-top: 0px;
     border-bottom: 2px solid;
     border-color: black;
-    z-index: 1;
+    
   }
 
   
@@ -48,5 +52,5 @@ body {
 
   .navbar{
     min-width: 1040px  !important;
-    
+    z-index: 1;
   }
