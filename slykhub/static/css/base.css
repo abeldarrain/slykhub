@@ -52,5 +52,5 @@ body {
 
   .navbar{
     min-width: 1040px  !important;
-    z-index: 1;
+    z-index: 99;
   }
