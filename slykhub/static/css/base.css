@@ -5,7 +5,7 @@ body {
   height: 100%;
 }
 
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
   /* .navbar{
     background-color: darkorchid;
   } */
@@ -42,6 +42,7 @@ body {
 
   .container { 
     min-width: 940px !important; 
+    max-width: none;
   }
 
   .navbar{
@@ -49,4 +50,3 @@ body {
     display: block !important;
 
   }
-
