@@ -2,7 +2,7 @@ ul{
     list-style-type: none;
 }
 
-li{
+#APikeySteps li{
     padding: 20px;
 }
 
@@ -14,3 +14,11 @@ img[src$=".svg"] { height: 270px; margin-bottom: 25px;}
     text-align: center;
     margin-bottom: 30px;
 }
+
+.help-text-wrapper{
+    margin-bottom: 40px;;
+}
+
+img[src$=".png"] {
+     margin-top: 15px;
+    }
