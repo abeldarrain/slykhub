@@ -63,7 +63,28 @@
                 {% endwith %}
       </div>
     {% block Dcontent %}
-    <h1>Under Construction</h1>
+    <div class="container text-center">
+    <img class="text-center" src="{{url_for('static', filename='img/slykhublogo.svg')}}" alt="">
+    </div>
+    <div class="container text-center home-menu">
+    <div class="text-center">
+      <a type="button" class="btn btn-outline-primary btn-square-xl" href="{{url_for('dashboard.users')}}" data-mdb-ripple-color="dark">
+        <h3 class="fw-bold"><span class="bi bi-people"></span>Users</h3><br>
+        <p>Check on your users growth and detailed information!</p>
+      </a>
+      <a type="button" class="btn btn-outline-primary btn-square-xl" href="{{url_for('dashboard.sales')}}" data-mdb-ripple-color="dark">
+        <h3 class="fw-bold"><span class="bi bi-cart-check"></span>Sales</h3><br>
+        <p>Check on your sales activity, payment methods, top Slyk buyers and more!</p>
+      </a>
+      <a type="button" class="btn btn-outline-primary btn-square-xl" href="{{url_for('dashboard.tasks')}}" data-mdb-ripple-color="dark">
+        <h3 class="fw-bold"><span class="bi bi-table"></span>Tasks</h3><br>
+        <p>Manually complete tasks for multiple users with one click!</p>
+      </a>
+    </div>
+    </div>
+  
+
+
     {% endblock Dcontent %}
     </div>
   </main>

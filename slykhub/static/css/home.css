@@ -74,4 +74,20 @@ main{
   margin-right: 50px;
 }
 
+.btn-square-xl {
+  width: 200px !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  height: 200px !important;
+  text-align: center;
+  padding-top: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
+  border: solid 4px;
+  border-color: #427ef4;
+  color: #427ef4;
+  }
 
+.home-menu{
+  margin-top: 20px;
+}
