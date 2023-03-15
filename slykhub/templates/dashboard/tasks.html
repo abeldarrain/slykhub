@@ -17,11 +17,11 @@
 {% endblock Dcss %}
 
 {% block Dcontent%}
-<div class="text-center">
+<div class="text-center container">
   <h1>Users &#38; Tasks</h1>
   </div>
-<form method='POST' id="tasksform" class="card">
-      <div class="card-header bg-primary">
+<form method='POST' id="tasksform" class="card container">
+      <div class="card-header container  w-100 bg-primary">
       <div class = "text-center w-100">
     <a class="btn btn-dark dropdown-toggle" id ="taskbtn" data-bs-toggle="dropdown" href="#">
       Select Task<span class="caret"></span>
@@ -35,7 +35,7 @@
     <input type="hidden" class="master" name="mastercheckbox" value="false" />
   </div>
 </div>
-<div class="card-body">   
+<div class="card-body container">   
 <table class="table" id="taskstable">
     <thead>
       <tr>
@@ -64,7 +64,7 @@
       {% endfor %}  
     </tbody>
   </table>
-  <div class=" w-100 text-center">
+  <div class=" w-100 text-center container">
   <button class="btn btn-lg btn-primary text-center" type="submit">Complete Task</button>
   </div>
 </form>

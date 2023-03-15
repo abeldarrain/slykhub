@@ -12,7 +12,7 @@ body {
   .navbar{
     position: sticky;
     top: 0;
-    width: 100%;
+    width: 100% !important;
     height:auto;
     text-align: right;
     margin-top: 0px;
@@ -40,4 +40,13 @@ body {
     margin-right: 10px;
   }
 
- 
+  .container { 
+    min-width: 940px !important; 
+  }
+
+  .navbar{
+    min-width: 1040px  !important;
+    display: block !important;
+
+  }
+
