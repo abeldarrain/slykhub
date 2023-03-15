@@ -23,6 +23,7 @@
 
 
 <link href="{{url_for('static', filename='css/home.css')}}" rel="stylesheet">
+<link href="{{url_for('static', filename='css/welcome.css')}}" rel="stylesheet">
 {% block Dcss %}
 
 {% endblock Dcss %}
@@ -63,9 +64,11 @@
                 {% endwith %}
       </div>
     {% block Dcontent %}
-    <div class="container text-center">
-    <img class="text-center" src="{{url_for('static', filename='img/slykhublogo.svg')}}" alt="">
-    </div>
+    <div class="container text-center img-container">
+      <a id='slykhublogo-container' href="{{url_for('help.help')}}" class="btn btn-outline-primary slykhub-btn">
+    <img id="slykhublogo" class="text-center slykhublogo" src="{{url_for('static', filename='img/slykhublogo.svg')}}" alt="">
+  </a>  
+  </div>
     <div class="container text-center home-menu">
     <div class="text-center">
       <a type="button" class="btn btn-outline-primary btn-square-xl" href="{{url_for('dashboard.users')}}" data-mdb-ripple-color="dark">
@@ -84,7 +87,7 @@
     </div>
   
 
-
+    <script src="{{url_for('static', filename='js/welcome.js')}}"></script>
     {% endblock Dcontent %}
     </div>
   </main>

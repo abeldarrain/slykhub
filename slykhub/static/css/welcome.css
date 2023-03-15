@@ -1,0 +1,41 @@
+
+.btn-square-xl {
+    width: 200px !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    height: 200px !important;
+    text-align: center;
+    padding-top: 20px;
+    margin-left: 25px;
+    margin-right: 25px;
+    border: solid 7px;
+    border-color: #427ef4;
+    color: #427ef4;
+    }
+  
+  .home-menu{
+    margin-top: 20px;
+  }
+  
+  .slykhublogo {
+    height: 270px; 
+   }
+  .img-container{
+   width: 100%;
+   height: 300px;
+   align-items: center;
+   text-align: center;
+   margin-bottom: 30px;
+  }
+
+  .slykhub-btn{
+    border-color: white;
+  }
+  .slykhub-btn:hover{
+    background-color: white;
+    border-color: white;
+  }
+
+  .slykhublogo:hover{
+    height: 300px;
+  }
