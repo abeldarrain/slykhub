@@ -13,16 +13,16 @@ $(window).on('scroll', function() {
       if ($(this).isInViewport()) {
         $(this).addClass('animated');
       }
-      else{
-        $(this).removeClass('animated');
-      }
+    //   else{
+    //     $(this).removeClass('animated');
+    //   }
     });
     $('.col-md-6').each(function() {
         if ($(this).isInViewport()) {
           $(this).addClass('animated');
         }
-        else{
-          $(this).removeClass('animated');
-        }
+        // else{
+        //   $(this).removeClass('animated');
+        // }
       });
   });
