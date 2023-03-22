@@ -5,15 +5,89 @@
 {% block title %}Help{% endblock %}
 
 {% block Dcss %}
-
+<link href="{{url_for('static', filename='css/help.css')}}" rel="stylesheet">
 {% endblock Dcss %}
 
 
 {% block Dcontent %}
 
-<div class="" id="apiKeyGuide">
-    <h1>How to get an API key</h1>
-    <p>This way my man</p>
-</div>
+<div class="container-fluid help-text-wrapper container" id="slykhubGuide">
+    <div class="container-fluid help-text-wrapper container">
+        <div class="img-container text-center">
+            <img class="text-center" src="{{url_for('static', filename='img/slykhublogo.svg')}}" alt=""></div>
+        </div>
+         <p class="fs-5">Slykhub is a web-based platform that provides business owners registered in Slyk with comprehensive statistical data related to their customers. This includes daily user growth and total number of registered users, as well as daily sales and best buyers.<br><br> 
+            It also offers a multi-task completion feature to help users stay organized and informed, while providing detailed information and activity tracking for all users registered in their Slyk.<br><br> 
+            Our mission is to provide Slyk owners with actionable insights that enable them to make strategic decisions in order to increase their profits. With Slykhub, users can easily track the performance of their Slyk so they can make necessary adjustments quickly and accurately.</p>
+    </div>
+    <div class="container-fluid help-text-wrapper container">
+          <h2 class="fw-bold">Slykhub features</h1>
+            <p class="fs-5">Through the top menu you can access all the features of Slykhub. Our site makes multiple calls to the Slyk API so it's normal for it to take a while.</p>
+        <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub menu example.png')}}" alt=""></div>
+    </div>
+    <div class="container-fluid help-text-wrapper container">
+        <div class="container-fluid help-text-wrapper container">
+         <h3 class="fw-bold">Datatables</h2>
+        <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub datatable example.png')}}" alt=""></div>
+        <p class="fs-5">Browsing in Slykhub you will find several tables with a similar format. These are called Datatables and present the following features pointed out in the image above:
+        </p><ol class="fs-5">
+            <li>Number of rows to be displayed.</li>
+            <li>Dynamic searchbox.</li>
+            <li>Column sorting (ascendent and descendent) indicated by highlighted arrows next the header.</li>
+            <li>Pagination and navigation.</li>
+        </ol>
+    </div>
+        <div class="container-fluid help-text-wrapper container">
+             <h3 class="fw-bold"> User Datatable</h2>
+            <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub user datatable example.png')}}" alt=""></div>
+            <p class="fs-5">The user datatable is a special datatable whose rows can be accessedto obtain additional information about the users.<br>
+            It also allows the export of all the table data to a csv file.</p>
+        </div>
+        <div class="container-fluid help-text-wrapper container">
+             <h3 class="fw-bold">Task Datatable and task completition</h2>
+            <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub tasks datatable example.png')}}" alt=""></div>
+            <p class="fs-5">The task datatable allows the selection of a task among all enabled tasks in the Slyk as well as multi-selection of users through checkboxes for the completion of the selected task.<br>
+                The "Select All" header will check or uncheck all checkboxes in the current page of the datatable.<br>
+                When the "Complete Task" button is clicked, the task will be completed for all selected users who have not completed it. The number of successful completions will be flashed at the top of the table.</p>
+        </div>
+    </div>
+    <div class="container-fluid help-text-wrapper container">
+         <h3 class="fw-bold">Charts</h2>
+        <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub line charts example.png')}}" alt=""></div>
+        <p class="fs-5">Charts in slykhub are interactive. The selection in the dropdown menu (for those who have them) will change the displayed data.<br>
+            In the same way, hovering over any graph will display additional information and clicking on the displayed data sets will skip them.</p>
+        <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub pie charts example.png')}}" alt=""></div>
+    </div>
 
+</div>
+<hr class="my-5 container" id="apiKeyGuide">
+<div class="container-fluid help-text-wrapper container" >
+    <div class="container-fluid help-text-wrapper container">
+      <h2 class="fw-bold">Why do I need an API key to use Slykhub?</h1>
+     <p class="fs-5">The API key is necessary to access and use the features available through Slyk's API. It helps us securely identify who you are and verify that only you have access to your data. Without an API key, it will be impossible for your account in our site to connect with Slyk and make use of its services.</p>
+</div>
+<div class="container-fluid help-text-wrapper container">
+     <h3 class="fw-bold">Steps to get an API key:</h2>
+    <ul id='APikeySteps'>
+        <li>
+             <h3 class="fw-bold">1. Go to Settings in your Slyk dashboard.</h2>
+            <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub api key instructions 1.png')}}" alt=""></div>
+        </li>
+        <li>
+             <h3 class="fw-bold">2. Click API key.</h2>
+            <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub api key instructions 2.png')}}" alt=""></div>
+        </li>
+        <li>
+             <h3 class="fw-bold">3. Create a new API key.</h2>
+            <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub api key instructions 3.png')}}" alt=""></div>
+        </li>
+        <li>
+             <h3 class="fw-bold">4. Copy the new API key.</h2>
+             <p class="fs-5">(It is important to copy the API key somewhere safe)</p>
+            <div class ="png-container text-center"><img class="mb-4 " src="{{url_for('static', filename='img/Slykhub api key instructions 4.png')}}" alt=""></div>
+             <p class="fs-5">And it's done! with your new API key you'll be able to create a new Slykhub account and access the available features.</p>
+        </li>
+        </ul>
+    </div>
+</div>
 {% endblock Dcontent%}
