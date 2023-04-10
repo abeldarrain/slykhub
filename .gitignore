@@ -7,9 +7,9 @@ slykhub/__pycache__/__init__.cpython-39.pyc
 slykhub/__pycache__/api.cpython-39.pyc
 slykhub/__pycache__/auth.cpython-39.pyc
 slykhub/__pycache__/dashboard.cpython-39.pyc
-instance/slykhub.sqlite
-instance/slykhub.sqlite
+dbschema.sql
 slykhub/__pycache__/api.cpython-39.pyc
 slykhub/__pycache__/auth.cpython-39.pyc
 slykhub/__pycache__/dashboard.cpython-39.pyc
 slykhub/__pycache__/util.cpython-39.pyc
+slykhub/schema.sql
