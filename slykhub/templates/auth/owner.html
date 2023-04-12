@@ -3,26 +3,30 @@
 {% block title %}{{g.user.username}}{% endblock title %}
 {% block Dcss %}
 
-<link rel="stylesheet" href="{{url_for('static' ,filename='css/dashboard/owner.css')}}">
+<link rel="stylesheet" href="{{url_for('static' ,filename='css/owner.css')}}">
 <script src="{{url_for('static', filename='js/owner.js')}}"></script>
 {% endblock Dcss %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 {% block Dcontent%}
 
+<div class="d-flex flex-row">
 <h1>{{g.user.username}}</h1>
 <!-- Modal -->
+<div class="align-items-center m-3">
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddSlykModal">
     Add Slyk
   </button>
+</div>
+</div>
 <div class="modal fade" id="AddSlykModal" tabindex="-1" role="dialog" aria-labelledby="AddSlykModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="AddSlykModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+          <h5 class="modal-title" id="AddSlykModalLabel">Add new Slyk</h5>
+          <button type="button" class="close align-content-center" data-bs-dismiss="modal" aria-label="Close">
+            <span class="" aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
@@ -31,10 +35,12 @@
                 <input type="text" class="form-control" id="floatingInput" name="api_key" autofocus>
                 <label for="floatingInput">API key</label>
                 </div>
+            <div class="mt-3">
             <a class="" href="{{url_for('help.help')}}#apiKeyGuide"><span class="bi bi-question-circle"></span>How to get an API key</a>
         </div>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Save changes</button>
           
         </div>
@@ -45,48 +51,72 @@
   </div>
 
 
-<div>
-    
-<ul>
+  <div class="d-flex flex-column align-items-center mt-5">
+<div class="col-md-6">  
+<ul class="list-group list-group-flush">
 
 {% for slyk in g.user.slyks %}
-<div class="d-flex flex-row">
-<li class="p-3 m-3">{{slyk.name}}
-
-<button type="button" class="btn btn-danger w-auto h-auto" data-bs-toggle="modal" data-bs-target="#DelSlykModal{{slyk.id}}">
-    Delete Slyk
+<li class="list-group-item">
+<div class="d-flex flex-row justify-content-between">
+{% if slyk.id == g.user.active_slyk_id%}
+<div class="slyk-btn-container">
+<button disabled  type="button" class="btn-slyk list-group-item list-group-item-action active" aria-current="true" >{{slyk.name}}
+</button>
+</div>
+<div class="slyk-del-btn-container">
+<button disabled  type="button" class=" btn-del btn btn-danger w-auto h-auto" data-bs-toggle="modal" data-bs-target="#DelSlykModal{{slyk.id}}">
+    Delete
   </button>
+</div>
+  {% else %}
+  <form  class="w-100" action="" method="POST">
+    <div class="d-flex flex-row justify-content-between">
+    <input type="hidden" name="slyk_id" value="{{slyk.id}}">
+    <div class="slyk-btn-container">
+  <button type="submit" class="list-group-item list-group-item-action" aria-current="false">{{slyk.name}}
+</button>
+</div>
+<div class="slyk-del-btn-container">
+<button type="button" class=" btn-del btn btn-danger w-auto h-auto" data-bs-toggle="modal" data-bs-target="#DelSlykModal{{slyk.id}}">
+    Delete
+  </button>
+</div>
+</div>
+</form>
+  {% endif %}
 </div>
 <div class="modal fade" id="DelSlykModal{{slyk.id}}" tabindex="-1" role="dialog" aria-labelledby="DelSlykModalLabel{{slyk.id}}" aria-hidden="true">
     <div class="modal-dialog" role="document">
         
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="DelSlykModalLabel{{slyk.id}}">Modal title</h5>
+          <h5 class="modal-title" id="DelSlykModalLabel{{slyk.id}}">Delete Slyk</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        
             <form  method="POST" action="{{url_for('auth.delete_slyk')}}">
+                <div class="modal-body">
             <input type="hidden" name="slyk_for_delete" value="{{slyk.id}}">
               
                 
-                <h1 class="text-text-warning-emphasis" >Are you sure to delete <strong>{{slyk.name}}</strong> Slyk? This change is irreversible.</h1>
-             
+                <h5 class="text-text-warning-emphasis" >Are you sure to delete <strong class="text-primary">{{slyk.name}}</strong> Slyk? This change is irreversible.</h5>
+            </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-danger">Delete</button>
           
         </div>
     </form>
-      </div>
+      
     
     </div>
   </div>
-</li>
 </div>
+</li>
 {% endfor %}
 </ul>
+</div>  
 </div>
 {% endblock Dcontent %}

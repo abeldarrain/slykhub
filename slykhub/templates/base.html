@@ -65,7 +65,7 @@
          <div class="d-flex ms-auto my-3 my-lg-0">
             <div class="d-flex">
               {% if g.user %}
-          <a href="{{url_for('auth.owner')}}"><h3 id='slyk_name'>{{ session['active_slyk'] }}</h3></a>
+          <a id="slyk_name_link" href="{{url_for('auth.owner')}}"><h3 id='slyk_name'>{{ session['active_slyk'] }}</h3></a>
           <a type="button" class="btn btn-dark" href="{{ url_for('auth.logout') }}">Log Out</a>
         {% else %}
         <a type="button" class="btn btn-light" href="{{ url_for('auth.login') }}">Log in</a>

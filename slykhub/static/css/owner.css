@@ -1,0 +1,29 @@
+button.close{
+    border: 0px;
+     background-color: white;
+}
+
+.list-group-item{
+    border: 0px !important;
+    border-bottom-left-radius: 0.25rem !important;
+    border-top-left-radius: 0.25rem !important;
+}
+
+.btn-del{
+    width: 100%;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+
+}
+
+div.slyk-btn-container{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+div.slyk-del-btn-container{
+    display: flex;
+    width: auto;
+    align-items: center;
+}

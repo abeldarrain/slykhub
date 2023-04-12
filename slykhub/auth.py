@@ -58,7 +58,11 @@ def sign_up():
                                 if Slyk.query.filter_by(api_key=api_key).first() is None:
                                     new_slyk=Slyk(user_id=new_user.id, name=owner['data'][0]['name'], api_key=api_key)
                                     db.session.add(new_slyk)
+                                    
+                                    
                                     try:
+                                        db.session.commit()
+                                        new_user.active_slyk_id = new_slyk.id
                                         db.session.commit()
                                     except Exception as e:
                                         error = 'Error creating new user and new slyk'
@@ -99,7 +103,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user.id
-            active_slyk = Slyk.query.filter_by(user_id=user.id).first()
+            active_slyk = Slyk.query.filter_by(id=user.active_slyk_id).first()
             session['api_key'] = active_slyk.api_key
             session['active_slyk'] = active_slyk.name
             return redirect(url_for('dashboard.home'))
@@ -158,9 +162,19 @@ def recover():
     return render_template('auth/recover.html')
 
 
-@bp.route('/owner', methods=['GET'])
+@bp.route('/owner', methods=['GET', 'POST'])
 @login_required
 def owner():
+    if request.method == 'POST':
+        slyk_id = request.form['slyk_id']
+        slyk = Slyk.query.filter_by(id=slyk_id).first()
+        slyk_user = User.query.filter_by(id = slyk.user_id).first()
+        slyk_user.active_slyk_id = slyk.id
+        db.session.commit()
+        session['api_key'] = slyk.api_key
+        session['active_slyk'] = slyk.name
+
+    
     return render_template('auth/owner.html')
 
 @bp.route('/owner/add_slyk', methods=['POST'])

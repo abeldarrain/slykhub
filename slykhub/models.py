@@ -33,6 +33,7 @@ class User(db.Model):
         username = db.Column(db.String(100), nullable=False, unique=True) 
         password = db.Column(db.Text, nullable=False)
         slyks = relationship('Slyk', backref='owner', lazy=True)
+        active_slyk_id = db.Column(db.Integer())
     
 class Slyk(db.Model):
     __tablename__ = 'slyk'

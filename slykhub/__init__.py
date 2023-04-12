@@ -7,8 +7,10 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__, instance_relative_config=True)
 app.config['SECRET_KEY'] = '129j12jd01k-k129i1092djijd01j'
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=60)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5433/slykhub_db"
-
+#Local DB
+# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5433/slykhub_db"
+#Neon DB
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://abeldarrain:Q9Mn4ORlcdJI@ep-icy-cake-283552.us-east-2.aws.neon.tech/slykhub"
 db = SQLAlchemy(app)
 from flask_migrate import Migrate
 migrate = Migrate(app, db)
