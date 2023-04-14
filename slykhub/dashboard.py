@@ -2,13 +2,14 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, session
 )
 from werkzeug.exceptions import abort
-
+import asyncio
+import aiohttp
 from slykhub.auth import login_required
 from . import db
 from urllib.error import HTTPError
 from .api import(
     get_verified_users , get_enabled_tasks,  
-    get_wallet_balance, get_users, get_payment_methods,
+    get_wallets_balance, get_wallet_balance, get_users, get_payment_methods,
     get_completed_transactions, get_orders, get_enabled_assets,
     get_user_by_id, get_completed_tasks_transactions, get_task_by_id, get_order_details_by_id,
     get_orders_for_user, get_product_by_id
@@ -349,24 +350,26 @@ def users():
     if isinstance(users,HTTPError):
         error = users
     else:
+        wallets=[]
+        users_depurated = []
         for user in users['data']:
             if 'user' in user['roles']:
-                (username, email, ids) = (user['name'], user['email'], user['id'])
-                ######################### With Balance ################# 
-                wallet = user['primaryWalletId']
-                balancedata = get_wallet_balance(session['api_key'], wallet)
-                #balancedata = {'data': [{'assetCode': 'btc', 'amount': 0.02}, {'assetCode': 'qva', 'amount': 200}]}
-                if balancedata is HTTPError:
-                    error = balancedata
-                else:  
-                    if balancedata['data']:
-                        balance = balancedata['data']
-                    else:
-                        balance = [{'assetCode': 'balance', 'amount': 'empty'}]
-                    user_table_rows.append((username, email, ids, balance))
-                ######################### Without Balance #################
-                #rows.append((username, email, ids))
+                wallets.append(user['primaryWalletId'])
+                users_depurated.append(user)
+        balances = asyncio.run(get_wallets_balance(session['api_key'],wallets))
+        for indx, user in enumerate(users_depurated):
+            (username, email, ids) = (user['name'], user['email'], user['id'])
+            ######################### With Balance ################# 
+            # try:
+            balancedata = balances[indx]
+            # except:
+            #     balancedata = {'data' : []}
+            balance = [{'assetCode': 'balance', 'amount': 'empty'}] if not balancedata['data'] else balancedata['data']
+            print(f'BALANCE FOR {username} is {balance} WITH WALLET ID {user["primaryWalletId"]}')
+            user_table_rows.append((username, email, ids, balance))
+                
                 ######################### END #################
+        
     ############################################User Growth################3
     new_users_by_date ={}
     
