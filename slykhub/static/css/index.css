@@ -62,10 +62,10 @@ img.my-3{
   justify-content: center;
 }
 
-.col-md-4.slide-left.animated {
+.col-md-3.slide-left.animated {
   animation: slide-in-from-left 2s ease-out .5s both;
 }
-.col-md-4.slide-right.animated {
+.col-md-3.slide-right.animated {
   animation: slide-in-from-right 2s ease-out .5s both;
 }
 
@@ -97,6 +97,20 @@ img.my-3{
   0% {
     opacity: 0;
     transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+.col-md-3.slide-bottom.animated{
+  animation: slide-in-from-bottom 2s ease-out .5s both;
+}
+
+@keyframes slide-in-from-bottom {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
   }
   100% {
     opacity: 1;
