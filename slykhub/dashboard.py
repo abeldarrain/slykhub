@@ -4,7 +4,7 @@ from flask import (
 from werkzeug.exceptions import abort
 
 from slykhub.auth import login_required
-from slykhub.db import get_db
+from . import db
 from urllib.error import HTTPError
 from .api import(
     get_verified_users , get_enabled_tasks,  
