@@ -23,7 +23,7 @@ div.index{
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-image: url("../img/example.avif");
+  background-image: url("../img/mockup.png");
   background-size: cover;
   background-position: center;
   justify-content: center;
@@ -117,3 +117,22 @@ img.my-3{
     transform: translateY(0%);
   }
 }
+
+.btn-help{
+  
+  margin-right: 10px;
+
+}
+.btn-help span{
+  display: inline-block;
+  width: 32px;
+  height: 100%;
+  margin-right: 0px;
+
+}
+.inside-header{
+  border-radius: 6px;
+  background: rgba(255,255,255,.5);
+  padding: 10px;
+}
+
