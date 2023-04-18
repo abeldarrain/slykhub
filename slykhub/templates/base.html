@@ -66,7 +66,9 @@
 
           </div>
          <div class="d-flex ms-auto my-3 my-lg-0">
+
             <div class="d-flex flex-row align-items-center">
+
               {% if g.user %}
           <a id="slyk_name_link" href="{{url_for('auth.owner')}}"><h3 id='slyk_name'>{{ session['active_slyk'] }}</h3></a>
           <a type="button" class="btn btn-dark" href="{{ url_for('auth.logout') }}">Log Out</a>
@@ -111,6 +113,7 @@
                 <p>&copy; Powered by <a href='https://slykhub.com'>Slykhub.com</a>.</p>
                 
         <a href="mailto:slykhub@slyk.io">Contact us</a>
+
             </div>
         </footer>
       </div>
