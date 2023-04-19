@@ -1,7 +1,8 @@
 from http.client import error
 from urllib import request, parse
 import json
-
+import asyncio
+import aiohttp
 from urllib.error import HTTPError
 
 
@@ -159,6 +160,30 @@ def get_wallet_balance(apikey, id):
     except HTTPError as e:
         print(e)
         return e
+
+def get_tasks(apikey, wallets,  session):
+        tasks = []
+        for wallet in wallets:
+                url="https://api.slyk.io/wallets/"+wallet+"/balance"
+                tasks.append(asyncio.create_task(session.get(url, ssl=False, headers={ 'apiKey': apikey} )))
+        return tasks                      
+                
+async def get_wallets_balance(apikey, wallets):
+        results =[]
+        async with aiohttp.ClientSession() as session:
+                try:
+                        tasks = get_tasks(apikey, wallets, session)
+                        responses = await asyncio.gather(*tasks)
+                        for response in responses:
+                                results.append( await response.json()) 
+                        print(f'#############THESE ARE THE RESULTS {results}')  
+                        return results
+                except error as e:
+                        print(e)
+                
+                except HTTPError as e:
+                        print(e)
+                        return e
 
 def get_payment_methods(apikey, url="https://api.slyk.io/payment-methods"):  
         return_data = {}
