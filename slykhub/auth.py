@@ -93,21 +93,23 @@ def login():
         username = request.form['username']
         password = request.form['password']
         error = None
-        user = User.query.filter_by(username=username).first()
+        try:
+            user = User.query.filter_by(username=username).first()        
+            if user is None:
+                error = 'Incorrect username.'
+            elif not check_password_hash(user.password, password):
+                error = 'Incorrect password.'
 
-        if user is None:
-            error = 'Incorrect username.'
-        elif not check_password_hash(user.password, password):
-            error = 'Incorrect password.'
-
-        if error is None:
-            session.clear()
-            session['user_id'] = user.id
-            active_slyk = Slyk.query.filter_by(id=user.active_slyk_id).first()
-            session['api_key'] = active_slyk.api_key
-            session['active_slyk'] = active_slyk.name
-            return redirect(url_for('dashboard.home'))
-
+            if error is None:
+                session.clear()
+                session['user_id'] = user.id
+                active_slyk = Slyk.query.filter_by(id=user.active_slyk_id).first()
+                session['api_key'] = active_slyk.api_key
+                session['active_slyk'] = active_slyk.name
+                return redirect(url_for('dashboard.home'))
+        except Exception as e:
+            print(e)
+            error = 'Unable to connect to Database'
         flash(error, 'error')
 
     return render_template('auth/login.html')

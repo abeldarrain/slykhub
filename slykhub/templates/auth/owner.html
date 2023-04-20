@@ -52,7 +52,9 @@
 
 
   <div class="d-flex flex-column align-items-center mt-5">
-<div class="col-md-6">  
+<div class="col-md-12 align-items-center d-flex flex-column">  
+  <h3 class="mb-2">Registered Slyks</h3>
+  <div class="col-md-6">
 <ul class="list-group list-group-flush">
 
 {% for slyk in g.user.slyks %}
@@ -117,6 +119,7 @@
 </li>
 {% endfor %}
 </ul>
-</div>  
+</div> 
+</div> 
 </div>
 {% endblock Dcontent %}

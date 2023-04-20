@@ -41,3 +41,7 @@ body {
   margin-top: 20px;
 } */
 img[src$=".svg"] { width: 100%; height: auto; margin-top: 25px;}
+
+.login-info p{
+  margin-bottom: 6px;
+}

@@ -27,3 +27,9 @@ div.slyk-del-btn-container{
     width: auto;
     align-items: center;
 }
+
+li.list-group-item{
+    border-top: 1px solid !important;
+    border-color:  rgb(222, 226, 230)!important;
+
+}

@@ -9,7 +9,7 @@ $.fn.isInViewport = function() {
 };
 
 $(window).on('scroll', function() {
-    $('.col-md-4').each(function() {
+    $('.col-md-3').each(function() {
       if ($(this).isInViewport()) {
         $(this).addClass('animated');
       }
