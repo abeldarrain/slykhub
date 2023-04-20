@@ -28,6 +28,6 @@ SQLAlchemy==2.0.9
 typing_extensions==4.5.0
 urllib3==1.26.14
 waitress==2.1.2
-Werkzeug==2.2.2
+Werkzeug==2.2.3
 yarl==1.8.2
 zipp==3.11.0
