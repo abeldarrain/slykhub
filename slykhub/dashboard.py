@@ -346,7 +346,7 @@ def users():
         error = orders        
     user_table_headers=('User','Email', 'Balance')
     user_table_rows=[]
-    users = get_verified_users(session['api_key'])
+    users = asyncio.run(get_verified_users(session['api_key']))
     if isinstance(users,HTTPError):
         error = users
     else:

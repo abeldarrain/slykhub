@@ -8,68 +8,60 @@ from urllib.error import HTTPError
 
 
 #return a list of all users registered in the slyk
-def get_users(apikey, url="https://api.slyk.io/users?page[size]=100&sorted=createdAt"):
-    return_data = {}
-    try:
-            req = request.Request(url, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
-            data = request.urlopen(req, timeout = 100)
-            json_data = json.loads(data.read())
-            return_data = json_data
-            total_rows = json_data['total']
-    except error as e:
-            print(e)
-    
-    except HTTPError as e:
-            return e
-        
-        
-    for i in range(int(total_rows/100)):
-        
+async def get_users(apikey, url="https://api.slyk.io/users?page[size]=100&sorted=createdAt"):
+        return_data = {}
         try:
-            req = request.Request(url+"&page[number]="+str(i+2), headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
-            data = request.urlopen(req, timeout = 100)
-            json_data = json.loads(data.read())
-            return_data['data'].extend(json_data['data'])
-            print(url+"&page[size]="+str(i+2))
-            print(len(return_data['data']))
-            
-        except error as e:
-            print(e)
-
-        except HTTPError as e:
-            return e
-    return return_data
-
-def get_verified_users(apikey, url="https://api.slyk.io/users?page[size]=100&sorted=createdAt&filter[verified]=true"):
-    return_data = {}
-    try:
-            req = request.Request(url, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
-            data = request.urlopen(req, timeout = 100)
-            json_data = json.loads(data.read())
-            return_data = json_data
-            total_rows = json_data['total']
-    except Exception as e:
-            print(e)
-            return e
-
-        
-        
-    for i in range(int(total_rows/100)):
-        
+                req = request.Request(url, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+                total_rows = json_data['total']
+        except Exception as e:
+                return e  
         try:
-            req = request.Request(url+"&page[number]="+str(i+2), headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
-            data = request.urlopen(req, timeout = 100)
-            json_data = json.loads(data.read())
-            return_data['data'].extend(json_data['data'])
-            print(url+"&page[size]="+str(i+2))
-            print(len(return_data['data']))
-            
+                async with aiohttp.ClientSession() as session:
+                        tasks=[]
+                        for i in range(int(total_rows/100)):
+                                tasks.append(asyncio.create_task(session.get(url+"&page[number]="+str(i+2), ssl=False, headers={ 'apiKey': apikey} )))
+                        responses = await asyncio.gather(*tasks)  
+                        for response in responses:
+                                response_awaited = await response.json()
+                                print(response)
+                                return_data['data'].extend(response_awaited['data'])
+                        print(f'#############THESE ARE THE RESULTS {return_data}')  
+                        return return_data    
         except error as e:
-            print(e)
-
+                print(e)
         except HTTPError as e:
-            return e
-    return return_data
+                return e
+ 
+
+async def get_verified_users(apikey, url="https://api.slyk.io/users?page[size]=100&sorted=createdAt&filter[verified]=true"):
+        return_data = {}
+        try:
+                req = request.Request(url, headers={'User-Agent': 'Mozilla/5.0', 'apiKey': apikey})
+                data = request.urlopen(req, timeout = 100)
+                json_data = json.loads(data.read())
+                return_data = json_data
+                total_rows = json_data['total']
+        except Exception as e:
+                return e  
+        try:
+                async with aiohttp.ClientSession() as session:
+                        tasks=[]
+                        for i in range(int(total_rows/100)):
+                                tasks.append(asyncio.create_task(session.get(url+"&page[number]="+str(i+2), ssl=False, headers={ 'apiKey': apikey} )))
+                        responses = await asyncio.gather(*tasks)  
+                        for response in responses:
+                                response_awaited = await response.json()
+                                print(response)
+                                return_data['data'].extend(response_awaited['data'])
+                        print(f'#############THESE ARE THE RESULTS {return_data}')  
+                        return return_data    
+        except error as e:
+                print(e)
+        except HTTPError as e:
+                return e        
 
 
 #return a user registered in the slyk
