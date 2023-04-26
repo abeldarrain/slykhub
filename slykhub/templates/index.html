@@ -1,4 +1,4 @@
-{% extends 'dashboard/home.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Welcome{% endblock title %}
 {% block css %}
@@ -9,7 +9,7 @@
 
 {% block content %}
     <!-- Main content -->
-    <div class="container" style="padding:0px; overflow:hidden;">
+    <div class="" style="padding:0px; overflow:hidden;">
 
         <div class="text-center main-header">
           <div class="overlay"></div>
@@ -18,10 +18,14 @@
             <p class="fw-semibold  lead">
                Slykhub provides insightful statistics and charts to help you grow your  Slyk.<br> Sign up right now for free!
             </p>
+            <div class="d-flex flex-md-row flex-column align-items-center">
+            <p><a role="button" class="btn-help btn btn-primary btn-lg" href="{{url_for('help.help')}}"><span class="bi bi-question-circle"></span>More about us</a></p>
             <p><a class="btn btn-primary btn-lg" href="{{ url_for('auth.sign_up') }}" role="button">Get started &raquo;</a></p>
+            </div>
+            
           </div>
         </div>
-  
+        
         <div class="row my-5">
           <div class="col-md-6">
             <div class ="img-feature"><img src="{{ url_for('static', filename='img/analitics.png') }}" alt="Statistics" class="my-3  img-thumbnail"></div>
@@ -31,7 +35,7 @@
           </div>
         </div>
 
-        <div class="d-flex flex-row mt-5 justify-content-center">
+        <div class="d-flex flex-md-row flex-column mt-5 justify-content-center">
           <div class="col-md-3 slide-left">
             <div class ="img-feature"><img src="{{ url_for('static', filename='img/user_growth.png') }}" alt="User Growth" class="my-3  img-thumbnail"></div>
             <h2 class=" ">Members</h2>

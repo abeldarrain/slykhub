@@ -109,7 +109,7 @@ def login():
                 return redirect(url_for('dashboard.home'))
         except Exception as e:
             print(e)
-            error = 'Unable to connect to Database'
+            error = 'Unable to connect, please try again'
         flash(error, 'error')
 
     return render_template('auth/login.html')

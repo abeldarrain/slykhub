@@ -49,10 +49,11 @@ body {
   }
 
   .navbar{
-    min-width: 1040px  !important;
     z-index: 99;
   }
-
+  .navbar-non-responsive{
+    min-width: 1040px  !important;
+  }
   .card-header {
     border-left: 1px solid ;
     border-top: 1px solid ;
@@ -63,3 +64,26 @@ body {
   #slyk_name_link:hover{ 
     text-decoration-color:  white; 
   }
+  @import url('https://fonts.googleapis.com/css2?family=Saira:wght@700&display=swap');
+  h1 {
+    font-family: 'Saira', sans-serif !important;
+    font-weight: 700!important;
+  }
+
+  h2,h3,h4,h5,h6{
+    font-family: 'Saira', sans-serif !important;
+    font-weight: 500!important;
+  }
+
+  button, .btn{
+    font-family: 'Saira', sans-serif !important;
+    font-weight: 500!important;
+  }
+  .collapsed-btns a{
+    width: fit-content;
+    height: fit-content;
+  }
+  .collapsed-btns{
+    align-items: center;
+  }
+  
