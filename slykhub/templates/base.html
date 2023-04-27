@@ -73,7 +73,7 @@
           <a id="slyk_name_link" href="{{url_for('auth.owner')}}"><h3 id='slyk_name'>{{ session['active_slyk'] }}</h3></a>
           <a type="button" class="btn btn-dark" href="{{ url_for('auth.logout') }}">Log Out</a>
         {% else %}
-        {#<a type="button" class="btn btn-light text-primary" href = "https://sykhub.slyk.io">Join the community!</a>
+        {#<a type="button" class="btn btn-light text-primary" href = "https://slykhub.slyk.io" target = "_blank">Join our Community!</a>
         <a type="button" class="btn btn-light" href="{{ url_for('auth.login') }}">Log in</a>
         <a type="button" class="btn btn-light" href = "{{ url_for('auth.sign_up') }}">Sign Up</a>#}
         {% endif %}
@@ -92,7 +92,7 @@
               </div>
               {% else %}
               <div class="collapsed-btns d-flex flex-column flex-sm-row">
-                <a type="button" class="btn btn-light text-primary mt-3 mt-sm-0" href = "https://sykhub.slyk.io">Join the community!</a>
+                <a type="button" class="btn btn-light text-primary mt-3 mt-sm-0" href = "https://slykhub.slyk.io" target = "_blank">Join our Community!</a>
                 <a type="button" class="btn btn-light my-3 my-sm-0" href="{{ url_for('auth.login') }}">Log in</a>
                 <a type="button" class="btn btn-light" href = "{{ url_for('auth.sign_up') }}">Sign Up</a>
               </div>
