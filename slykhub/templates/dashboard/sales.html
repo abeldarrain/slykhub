@@ -87,12 +87,13 @@
                         datasets:  {{orders_prices_data |tojson}}
                         },
                         options: {
+                            responsive:true,
                             scales: {
                               y: {
-                                beginAtZero: true
-                              }
+                                beginAtZero: true,
+                              },
                             },
-                            responsive:true
+                            
                           }
                           
                     });
