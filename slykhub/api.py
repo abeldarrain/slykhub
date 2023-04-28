@@ -161,7 +161,7 @@ def get_wallet_balance(apikey, id):
         print(e)
         return e
 
-def get_tasks(apikey, wallets,  session):
+def get_tasks_for_balance(apikey, wallets,  session):
         tasks = []
         for wallet in wallets:
                 url="https://api.slyk.io/wallets/"+wallet+"/balance"
@@ -172,7 +172,7 @@ async def get_wallets_balance(apikey, wallets):
         results =[]
         async with aiohttp.ClientSession() as session:
                 try:
-                        tasks = get_tasks(apikey, wallets, session)
+                        tasks = get_tasks_for_balance(apikey, wallets, session)
                         responses = await asyncio.gather(*tasks)
                         for response in responses:
                                 results.append( await response.json()) 
