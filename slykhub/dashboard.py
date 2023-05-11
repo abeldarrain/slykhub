@@ -62,7 +62,7 @@ def tasks():
     #headers=('User','Email', 'Balance', 'Select All')
     rows=[]
     tasks=[]
-    user_data = get_verified_users(session['api_key'])
+    user_data = asyncio.run(get_verified_users(session['api_key']))
     if isinstance(user_data,HTTPError):
         error = user_data
     else:
@@ -273,7 +273,7 @@ def sales():
         top_buyers_by_amount={}
         top_buyers_by_frequency ={}
         top_buyers_labels = ['Name', 'Amount', 'Asset']
-        user_data = get_verified_users(session['api_key'])
+        user_data =  asyncio.run(get_verified_users(session['api_key']))
         if isinstance(user_data,HTTPError):
             error = user_data
         else:   
